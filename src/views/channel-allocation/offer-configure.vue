@@ -44,11 +44,11 @@
                 </Card>
             </Col>
         </Row>
-        <!-- 新增 -->
+        <!-- 新增/编辑 -->
         <Modal
-                  v-model="isadd"
+                  v-model="isShowAddOrEdit"
                   width="800px"
-                  title="新增Offer">
+                  :title="isShowAdd?$t('addBtn'):$t('editBtn')">
                   <Card :bordered="false" dis-hover>
                       <Form ref="addoffer" :label-width="180" :model="addinfo" :rules="ruleadd">
                           <FormItem :label="$t('country')" prop="country">
@@ -57,7 +57,7 @@
                                 </Select>
                           </FormItem>
                            <FormItem :label="$t('operator')" prop="operator">
-                               <Select v-model="addinfo.country" style="width:500px" :placeholder="$t('selectPlaceholder')">
+                               <Select v-model="addinfo.operator" style="width:500px" :placeholder="$t('selectPlaceholder')">
                                         <Option v-for="item in results" :value="item.operator" :key="item.value">{{item.operator}}</Option>
                                 </Select>
                                 <span @click="aaaaaaaaaa" class="addspan"><Icon type="md-add-circle" size="20"/></span>
@@ -92,12 +92,16 @@
                       </Form>
                   </Card>
                   <!-- 自定义页脚内容 -->
-                 <div slot="footer">
-                      <Button @click="cancelEdit()">取消</Button>
-                      <Button type="primary" @click="Edit()">保存</Button>
-                  </div>
+                 <div v-if="isShowAdd" slot="footer">
+                      <Button @click="cancelAdd()">{{$t('cancelBtn')}}</Button>
+                      <Button type="primary" @click="add()">{{$t('saveBtn')}}</Button>
+                 </div>
+                  <div v-else slot="footer">
+                      <Button @click="cancelEdit()">{{$t('cancelBtn')}}</Button>
+                      <Button type="primary" @click="edit()">{{$t('editBtn')}}</Button>
+                 </div>
       </Modal>
-
+      
     </div>
 </template>
 
@@ -158,8 +162,9 @@
                         {required:true,message:this.$t('addoriginallink'),trigger:'blur'}
                     ]
                 },
+                isShowAddOrEdit:false,
                 isonoff:false,
-                isadd:false,
+                isShowAdd:false,
                 data1:[
                     {
                         id:1,
@@ -276,11 +281,29 @@
             },
             //打开新增
             showAdd(){
-                this.isadd=true;
+                this.initaddinfo();
+                this.isShowAdd=true;
+                this.isShowAddOrEdit=true;
+            },
+            showEdit(){
+                 this.isShowAdd=false;
+                 this.isShowAddOrEdit = true;
+            },
+            edit(){
+                 console.log(this.addinfo)
+                 console.log("编辑")
+            },
+            cancelEdit(){
+                this.isShowAddOrEdit=false;
+            },
+            add(){
+                console.log(this.addinfo)
+                console.log("添加");
             },
             //关闭编辑
-            cancelEdit(){
-                this.isadd=false;
+            cancelAdd(){
+                this.isShowAddOrEdit=false;
+                this.isShowAdd=false;
             },
             //删除
             remove(){
@@ -292,6 +315,16 @@
             },
             aaaaaaaaaa(){
                 alert(111)
+            },
+            initaddinfo(){
+                this.addinfo.country='',
+                this.addinfo.operator='',
+                this.addinfo.application='',
+                this.addinfo.platform='',
+                this.addinfo.promotiontype='',
+                this.addinfo.originallink='',
+                this.addinfo.captype='',
+                this.addinfo.capnumber=''
             }
         }
     }
@@ -323,6 +356,5 @@
     .addspan{
         display: inline;
         cursor: pointer;
-       
     }
 </style>
