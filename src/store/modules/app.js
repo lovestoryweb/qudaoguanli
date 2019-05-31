@@ -9,8 +9,8 @@ const app = {
         lang: '',
         isFullScreen: false,
         openedSubmenuArr: [], // 要展开的菜单数组
-        menuTheme: 'dark', // 主题
-        themeColor: '',
+        menuTheme: 'light', // 主题
+        themeColor: 'light',
         pageOpenedList: [{
             title: {
                 i18n: {i18n: 'home'}
