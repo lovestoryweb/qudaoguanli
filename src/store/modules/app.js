@@ -9,7 +9,7 @@ const app = {
         lang: '',
         isFullScreen: false,
         openedSubmenuArr: [], // 要展开的菜单数组
-        menuTheme: 'light', // 主题
+        menuTheme: 'light', // 主题  dark
         themeColor: 'light',
         pageOpenedList: [{
             title: {

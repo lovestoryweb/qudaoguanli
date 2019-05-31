@@ -53,8 +53,8 @@ export const router = new VueRouter(RouterConfig);
 //     }
 // });
 
-// router.afterEach((to) => {
-//     Util.openNewPage(router.app, to.name, to.params, to.query);
-//     iView.LoadingBar.finish();
-//     window.scrollTo(0, 0);
-// });
+router.afterEach((to) => {
+    Util.openNewPage(router.app, to.name, to.params, to.query);
+    iView.LoadingBar.finish();
+    window.scrollTo(0, 0);
+});

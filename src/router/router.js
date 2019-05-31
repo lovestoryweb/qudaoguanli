@@ -63,26 +63,26 @@ export const otherRouter = {
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
        {
-           path: '/channelallocation',
+           path: '/promotion',
            icon: 'md-hammer',
-           name: 'channelallocation',
-           title: {i18n: 'channelallocation'},
+           name: 'promotion',
+           title: {i18n: 'promotion'},
            component:Main,
            children:[
-              {path: 'offerconfigure' ,title:{i18n:'offerconfigure'},icon: 'ios-flash',name: 'offerconfigure' , component:()=>import('@/views/channel-allocation/offer-configure.vue')},
-              {path: 'linkconfigure' ,title:{i18n:'linkconfigure'},icon: 'ios-flash',name: 'linkconfigure' , component:()=>import('@/views/channel-allocation/link-configure.vue')},
+              {path: 'offers' ,title:{i18n:'offers'},icon: 'ios-flash',name: 'offers' , component:()=>import('@/views/promotion/offers.vue')},
+              {path: 'channellinks' ,title:{i18n:'channellinks'},icon: 'ios-flash',name: 'channellinks' , component:()=>import('@/views/promotion/channellinks.vue')},
            ]
        },
        {
-           path: '/informationmanage',
+           path: '/infomanagement',
            icon: 'md-hammer',
-           name: 'informationmanage',
-           title: {i18n: 'informationmanage'},
+           name: 'infomanagement',
+           title: {i18n: 'infomanagement'},
            component:Main,
            children:[
-               {path: 'channel',title:{i18n:'channel'},icon:'ios-flash',name:'channel',component:()=>import('@/views/information-manage/channel.vue')},
+               {path: 'channels',title:{i18n:'channels'},icon:'ios-flash',name:'channels',component:()=>import('@/views/information-manage/channel.vue')},
                {path: 'country',title:{i18n:'country'},icon:'ios-flash',name:'country',component:()=>import('@/views/information-manage/country.vue')},
-               {path: 'operator',title:{i18n:'operator'},icon:'ios-flash',name:'operator',component:()=>import('@/views/information-manage/operator.vue')},
+               {path: 'carriers',title:{i18n:'carriers'},icon:'ios-flash',name:'carriers',component:()=>import('@/views/information-manage/carriers.vue')},
                {path: 'application',title:{i18n:'application'},icon:'ios-flash',name:'application',component:()=>import('@/views/information-manage/application.vue')},
                {path: 'violation',title:{i18n:'violation'},icon:'ios-flash',name:'violation',component:()=>import('@/views/information-manage/violation.vue')},
            ]
