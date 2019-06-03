@@ -24,6 +24,8 @@
                 <div class="navicon-con">
                     <Button :style="{transform: 'rotateZ(' + (this.shrink ? '-90' : '0') + 'deg)'}" type="text" @click="toggleClick">
                         <Icon type="ivu-icon ivu-icon-md-menu" size="32"></Icon>
+                        <!-- <Icon custom="_icon88" size="32"></Icon> -->
+                        
                     </Button>
                 </div>
                  <div class="header-middle-con">

@@ -63,19 +63,20 @@ export const otherRouter = {
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
        {
+           
            path: '/promotion',
-           icon: 'md-hammer',
+           icon: '_icon19',
            name: 'promotion',
            title: {i18n: 'promotion'},
            component:Main,
            children:[
-              {path: 'offers' ,title:{i18n:'offers'},icon: 'ios-flash',name: 'offers' , component:()=>import('@/views/promotion/offers.vue')},
+              {path: 'offers' ,title:{i18n:'offers'},icon: '',name: 'offers' , component:()=>import('@/views/promotion/offers.vue')},
               {path: 'channellinks' ,title:{i18n:'channellinks'},icon: 'ios-flash',name: 'channellinks' , component:()=>import('@/views/promotion/channellinks.vue')},
            ]
        },
        {
            path: '/infomanagement',
-           icon: 'md-hammer',
+           icon: '_icon16',
            name: 'infomanagement',
            title: {i18n: 'infomanagement'},
            component:Main,
@@ -89,7 +90,7 @@ export const appRouter = [
        },
        {
             path: '/recordquery',
-            icon: 'md-hammer',
+            icon: '_icon20',
             name: 'recordquery',
             title: {i18n:'recordquery'},
             component: Main,
@@ -102,7 +103,7 @@ export const appRouter = [
        {
             path: '/budgetmanage',
             name: 'budgetmanage',
-            icon: 'md-hammer',
+            icon: '_icon18',
             title: {i18n:'budgetmanage'},
             component:Main,
             children:[

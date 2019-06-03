@@ -1,5 +1,5 @@
 <template>
-    <Breadcrumb>
+    <Breadcrumb separator=">">
         <BreadcrumbItem 
             v-for="item in currentPath" 
             :to="item.path" 

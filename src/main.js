@@ -9,6 +9,7 @@ import 'iview/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
 import util from './libs/util';
 import http from './libs/axiosUtil.js';
+import './styles/icon/style.less'
 
 Vue.use(VueI18n);
 Vue.use(iView);
