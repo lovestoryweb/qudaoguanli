@@ -1,5 +1,9 @@
 <style lang="less">
     @import "./main.less";
+    .dropa{
+        color:#515a6e;
+        padding:18px 0;
+    }
 </style>
 <template>
     <div class="main" :class="{'main-hide-text': shrink}">
@@ -14,7 +18,7 @@
                     :menu-list="menuList">
                     <div slot="top" class="logo-con">
                         <img v-show="!shrink"  src="../images/logo-slide.png" key="max-logo" class="max-logo" />
-                        <img v-show="shrink" src="../images/logo-min.png" key="min-logo" />
+                        <img v-show="shrink" src="" key="min-logo" />
                     </div>
                 </shrinkable-menu>
             </scroll-bar>
@@ -34,24 +38,29 @@
                     </div>
                 </div>
                 <div class="header-avator-con">
-                    <Dropdown transfer @on-click="handleClickLanguage" align="middle">
-                        <a href="javascript:void(0)">
-                            <img src="../images/China.png" style="position: relative;top: 10px" v-show="language== 'zh-CN'">
-                            <img src="../images/England.png" style="position: relative;top: 10px" v-show="language=='en-US'">
+                    <Dropdown transfer @on-click="handleClickLanguage" align="middle" >
+                        <a href="javascript:void(0)" class="dropa">
+                            <!-- <img src="../images/China.png" style="position: relative;top: 10px" v-show="language== 'zh-CN'">
+                            <img src="../images/England.png" style="position: relative;top: 10px" v-show="language=='en-US'"> -->
+                            <!-- <Icon type="ivu-icon ivu-icon-md-arrow-dropdown" size="15"></Icon> -->
+                            
+
+                            <span v-show="language== 'zh-CN'"><Icon custom="_icon22" size="25"></Icon>&nbsp;简体中文</span>
+                            <span v-show="language== 'en-US'"><Icon custom="_icon22" size="25"></Icon>&nbsp;English</span>
                             <Icon type="ivu-icon ivu-icon-md-arrow-dropdown" size="15"></Icon>
                         </a>
                         <DropdownMenu slot="list">
                             <DropdownItem name="China" :disabled="language== 'zh-CN'" :selected="language== 'zh-CN'">
-                                <img src="../images/China.png" style="vertical-align:middle;">
-                                <span>中文</span>
+                                <!-- <img src="../images/China.png" style="vertical-align:middle;"> -->
+                                <span>简体中文</span>
                             </DropdownItem>
                             <DropdownItem name="England" :disabled="language== 'en-US'" :selected="language== 'en-US'">
-                                <img src="../images/England.png" style="vertical-align:middle;">
+                                <!-- <img src="../images/England.png" style="vertical-align:middle;"> -->
                                 <span>English</span>
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown> 
-                    <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
+                    <!-- <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen> -->
                     <lock-screen></lock-screen>
                     
                     <div class="user-dropdown-menu-con">

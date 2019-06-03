@@ -71,7 +71,7 @@ export const appRouter = [
            component:Main,
            children:[
               {path: 'offers' ,title:{i18n:'offers'},icon: '',name: 'offers' , component:()=>import('@/views/promotion/offers.vue')},
-              {path: 'channellinks' ,title:{i18n:'channellinks'},icon: 'ios-flash',name: 'channellinks' , component:()=>import('@/views/promotion/channellinks.vue')},
+              {path: 'channellinks' ,title:{i18n:'channellinks'},icon: '',name: 'channellinks' , component:()=>import('@/views/promotion/channellinks.vue')},
            ]
        },
        {
@@ -81,11 +81,11 @@ export const appRouter = [
            title: {i18n: 'infomanagement'},
            component:Main,
            children:[
-               {path: 'channels',title:{i18n:'channels'},icon:'ios-flash',name:'channels',component:()=>import('@/views/information-manage/channel.vue')},
-               {path: 'country',title:{i18n:'country'},icon:'ios-flash',name:'country',component:()=>import('@/views/information-manage/country.vue')},
-               {path: 'carriers',title:{i18n:'carriers'},icon:'ios-flash',name:'carriers',component:()=>import('@/views/information-manage/carriers.vue')},
-               {path: 'application',title:{i18n:'application'},icon:'ios-flash',name:'application',component:()=>import('@/views/information-manage/application.vue')},
-               {path: 'violation',title:{i18n:'violation'},icon:'ios-flash',name:'violation',component:()=>import('@/views/information-manage/violation.vue')},
+               {path: 'channels',title:{i18n:'channels'},icon:'',name:'channels',component:()=>import('@/views/information-manage/channel.vue')},
+               {path: 'country',title:{i18n:'country'},icon:' ',name:'country',component:()=>import('@/views/information-manage/country.vue')},
+               {path: 'carriers',title:{i18n:'carriers'},icon:'',name:'carriers',component:()=>import('@/views/information-manage/carriers.vue')},
+               {path: 'application',title:{i18n:'application'},icon:'',name:'application',component:()=>import('@/views/information-manage/application.vue')},
+               {path: 'violation',title:{i18n:'violation'},icon:'',name:'violation',component:()=>import('@/views/information-manage/violation.vue')},
            ]
        },
        {
@@ -95,9 +95,9 @@ export const appRouter = [
             title: {i18n:'recordquery'},
             component: Main,
             children:[
-                {path: 'notification' ,title: {i18n: 'notification'} ,icon: 'ios-flash' ,name:'notification' ,component:()=>import('@/views/record-query/notification-query.vue')},
-                {path: 'click' ,title: {i18n: 'click'} ,icon: 'ios-flash' ,name:'ios-flash' ,component:()=>import('@/views/record-query/click-query.vue')},
-                {path: 'conversion ' ,title: {i18n: 'conversion'} ,icon: 'ios-flash' ,name:'conversion' ,component:()=>import('@/views/record-query/conversion-query.vue')},
+                {path: 'notification' ,title: {i18n: 'notification'} ,icon: '' ,name:'notification' ,component:()=>import('@/views/record-query/notification-query.vue')},
+                {path: 'click' ,title: {i18n: 'click'} ,icon: '' ,name:'' ,component:()=>import('@/views/record-query/click-query.vue')},
+                {path: 'conversion ' ,title: {i18n: 'conversion'} ,icon: '' ,name:'conversion' ,component:()=>import('@/views/record-query/conversion-query.vue')},
             ]
        },
        {
@@ -107,10 +107,10 @@ export const appRouter = [
             title: {i18n:'budgetmanage'},
             component:Main,
             children:[
-                {path:'channelbudget',title:{i18n:'channelbudget'},icon:'ios-flash',name:'channelbudget',component:()=>import('@/views/budget-manage/channel-budget.vue')},
-                {path:'regionalstatistics',title:{i18n:'regionalstatistics'},icon:'ios-flash',name:'regionalstatistics',component:()=>import('@/views/budget-manage/regional-statistics.vue')},
-                {path:'revenuestatistics',title:{i18n:'revenuestatistics'},icon:'ios-flash',name:'revenuestatistics',component:()=>import('@/views/budget-manage/revenue-statistics.vue')},
-                {path:'billmanage',title:{i18n:'billmanage'},icon:'ios-flash',name:'billmanage',component:()=>import('@/views/budget-manage/bill-manage.vue')}
+                {path:'channelbudget',title:{i18n:'channelbudget'},icon:'',name:'channelbudget',component:()=>import('@/views/budget-manage/channel-budget.vue')},
+                {path:'regionalstatistics',title:{i18n:'regionalstatistics'},icon:'',name:'regionalstatistics',component:()=>import('@/views/budget-manage/regional-statistics.vue')},
+                {path:'revenuestatistics',title:{i18n:'revenuestatistics'},icon:'',name:'revenuestatistics',component:()=>import('@/views/budget-manage/revenue-statistics.vue')},
+                {path:'billmanage',title:{i18n:'billmanage'},icon:'',name:'billmanage',component:()=>import('@/views/budget-manage/bill-manage.vue')}
             ]
        }
 ];
