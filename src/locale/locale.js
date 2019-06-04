@@ -503,7 +503,7 @@ export default {
         country:'国家',
         carriers:'运营商',
         application:'应用',
-        violation:'违规',
+        violation:'违规记录',
         recordquery:'记录查询',
         notification:'通知记录',
         click:'点击记录',
@@ -512,7 +512,7 @@ export default {
         channelbudget:'渠道转化支出统计',
         regionalstatistics:'区域收支统计',
         revenuestatistics:'收入统计',
-        billmanage:'渠道账号管理',
+        billmanage:'渠道账单管理',
         platform:'平台',
         offername:'Offer名称',
         promotiontype:'推广类型',
@@ -525,7 +525,17 @@ export default {
         addoperatorWarning:'运营商不能为空',
         addapplicationWarning:'应用不能为空',
         addplatformWarning:'平台不能为空',
-        addoriginallink:'原始链接不能为空'
+        addoriginallink:'原始链接不能为空',
+        
+
+        clickId: '点击ID',
+        nameOfPreferential: 'Offer名称',
+        channelId: '渠道ID',
+        channel: '渠道',
+        subchannelParameter: '子渠道参数',
+        noticeTheResults: '通知结果',
+        clickOnTheTime: '点击时间',
+        noticeTheTime: '通知时间'
     },
     'en-US': {
         loginTitle: 'Login',

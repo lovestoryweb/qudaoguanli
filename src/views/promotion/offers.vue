@@ -27,7 +27,7 @@
                     <div>
                         <div class="btndiv">
                             <Button type="primary" @click="showAdd()">
-                                <Icon type="plus-round"></Icon>&nbsp;{{$t('addBtn')}}  
+                                <Icon type="md-add"></Icon>&nbsp;{{$t('addBtn')}}  
                             </Button>
                         </div>
                         <Table border :columns="columns1" :data="data1" :no-data-text="$t('noResult')"></Table>
@@ -180,32 +180,32 @@
                     {
                         title: this.$t('offername'),
                         key:"id",
-                        minWidth: 50,
+                        minWidth: 100,
                         align: 'center',
-                        fixed:'left'
+                        // fixed:'left'
                     },
                      {
                         title:this.$t('promotiontype'),
                         key:"sourceChannelName",
-                        Width: 150,
+                        minWidth: 150,
                         align: 'center',
                     },
                     {
                         title:this.$t('originallink'),
                         key:"targetChannelName",
-                        Width: 150,
+                        minWidth: 150,
                         align: 'center',
                     },
                     {
                         title:this.$t('captype'),
                         key:'min',
-                         Width: 150,
+                         minWidth: 150,
                         align: 'center',
                     },
                     {
                          title:this.$t('capnumber'),
                         key:'max',
-                        Width: 150,
+                        minWidth: 150,
                         align: 'center',
                     },
                      {
@@ -214,61 +214,44 @@
                         Width: 150,
                         align: 'center',
                     },
-                    //  {
-                    //     title:this.$t('linkonoff'),
-                    //     key:'old',
-                    //     Width: 150,
-                    //     align: 'center',
-                    //     render: (h, params) => {  // 重点
-                    //     return h('i-switch', {  //按钮的话是：button自行替换
-                    //          props: {  //这里可以设置它的属性
-                    //             value:this.isonoff,     //设置它的值比如：true或false
-                    //           },
-                    //           on: { //操作事件
-                    //              'on-change':(value)=>{
-                    //                  console.log(value);
-                    //                  this.isonoff=value;
-                    //              }
-                    //           }
-                    //     })
-                    //   }
-                    // },
                     {
                         title: this.$t('operateCol'),
                         key: 'action',
-                        Width: 150,
+                        minWidth: 80,
                         align: 'center',
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
-                                h('Button', {
+                                 h('Icon', {
                                     props: {
-                                        type: 'primary',
-                                        size: 'small'
+                                        custom:'_icon3',
+                                        size:'20'
                                     },
                                     style: {
-                                        marginRight: '5px'
+                                        marginRight: '10px',
+                                        cursor: 'pointer'
                                     },
                                     on: {
                                         click: () => {
                                              this.showEdit(params.row.id)
                                         }
                                     }
-                                }, this.$t('editBtn')),
-                                 h('Button', {
+                                }, ''),
+                                 h('Icon', {
                                     props: {
-                                        type: 'primary',
-                                        size: 'small'
+                                        custom:'_icon6',
+                                        size:'20'
                                     },
                                     style: {
-                                        marginRight: '5px'
+                                        marginRight: '10px',
+                                        cursor: 'pointer'
                                     },
                                     on: {
                                         click: () => {
                                              this.removeOffer(params.row.offername)
                                         }
                                     }
-                                }, this.$t('deleteBtn'))
+                                }, ''),
                             ],);
                         }
                     }
@@ -285,7 +268,8 @@
                 this.isShowAdd=true;
                 this.isShowAddOrEdit=true;
             },
-            showEdit(){
+            showEdit(id){
+                 console.log(id)
                  this.isShowAdd=false;
                  this.isShowAddOrEdit = true;
             },

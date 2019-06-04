@@ -96,8 +96,7 @@ export const appRouter = [
             component: Main,
             children:[
                 {path: 'notification' ,title: {i18n: 'notification'} ,icon: '' ,name:'notification' ,component:()=>import('@/views/record-query/notification-query.vue')},
-                {path: 'click' ,title: {i18n: 'click'} ,icon: '' ,name:'' ,component:()=>import('@/views/record-query/click-query.vue')},
-                {path: 'conversion ' ,title: {i18n: 'conversion'} ,icon: '' ,name:'conversion' ,component:()=>import('@/views/record-query/conversion-query.vue')},
+                {path: 'click' ,title: {i18n: 'click'} ,icon: '' ,name:'click' ,component:()=>import('@/views/record-query/click-query.vue')}
             ]
        },
        {

@@ -25,9 +25,6 @@
                          <div style="float:right;">
                              <Button type="primary" icon="ios-search" @click="search()">{{$t('search')}}</Button>
                          </div>
-
-
-
                           <div>
                              <span class="span_space">{{$t('country')}}</span>
                               <Select v-model="addinfo.country" class="theme_searchfield":placeholder="$t('selectPlaceholder')">
@@ -43,13 +40,10 @@
                              </Select>
                          </div>
                     </div>
-                   
-
-
                     <div>
                         <div class="btndiv">
                             <Button type="primary" @click="showAdd()">
-                                <Icon type="plus-round"></Icon>&nbsp;{{$t('addBtn')}}  
+                                <Icon type="md-add"></Icon>&nbsp;{{$t('addBtn')}}  
                             </Button>
                         </div>
                         <Table border :columns="columns1" :data="data1" :no-data-text="$t('noResult')"></Table>
@@ -66,6 +60,85 @@
                 </Card>
             </Col>
         </Row>
+
+
+
+
+        <!-- 新增渠道链接 -->
+        <Modal
+             v-model="isAddChannel"
+             width="800px"
+             title="新增渠道链接">
+             <Card :bordered="false" dis-hover>
+                 <Form ref="addoffer" :label-width="180" :model="addinfo" :rules="ruleadd">
+                     <FormItem label="Offer名称" prop="">
+                          <Select v-model="addinfo.country" style="width:500px" :placeholder="$t('selectPlaceholder')">
+                                   <Option v-for="item in results" :value="item.country" :key="item.value">{{item.country}}</Option>
+                           </Select>
+                     </FormItem>
+                     <FormItem label="渠道" prop="">
+                          <Select v-model="addinfo.country" style="width:500px" :placeholder="$t('selectPlaceholder')">
+                                   <Option v-for="item in results" :value="item.country" :key="item.value">{{item.country}}</Option>
+                           </Select>
+                     </FormItem>
+                      <FormItem label="价格" prop="">
+                            <Input v-model="addinfo.capnumber" style="width:500px" class="user_field"></Input>
+                     </FormItem>
+                     <FormItem label="PO" prop="">
+                            <Input v-model="addinfo.capnumber" style="width:500px" class="user_field" placeholder="转化/日"></Input>
+                     </FormItem>
+                      <FormItem label="是否开启" prop="">
+                            <i-switch v-model="addinfo.cpStatus" true-value="0" false-value="1" size="large">
+                                <span slot="open">ON</span>
+                                <span slot="close">OFF</span>
+                            </i-switch>
+                        </FormItem>
+                 </Form>
+             </Card>
+             <!-- 自定义页脚内容 -->  
+            <div slot="footer">
+                 <Button @click="cancelAdd()">{{$t('cancelBtn')}}</Button>
+                 <Button type="primary" @click="add()">{{$t('saveBtn')}}</Button>
+            </div>
+        </Modal>
+
+        <!-- 新增优化 -->
+        <Modal
+             v-model="isAddOptimization"
+             width="800px"
+             title="新增优化">
+             <Card :bordered="false" dis-hover>
+                 <Form ref="addoffer" :label-width="180" :model="addinfo" :rules="ruleadd">
+                     <FormItem label="Offer名称" prop="">
+                          <Select v-model="addinfo.country" style="width:500px" :placeholder="$t('selectPlaceholder')">
+                                   <Option v-for="item in results" :value="item.country" :key="item.value">{{item.country}}</Option>
+                           </Select>
+                     </FormItem>
+                     <FormItem label="渠道" prop="">
+                          <Select v-model="addinfo.country" style="width:500px" :placeholder="$t('selectPlaceholder')">
+                                   <Option v-for="item in results" :value="item.country" :key="item.value">{{item.country}}</Option>
+                           </Select>
+                     </FormItem>
+                      <FormItem label="价格" prop="">
+                            <Input v-model="addinfo.capnumber" style="width:500px" class="user_field"></Input>
+                     </FormItem>
+                     <FormItem label="PO" prop="">
+                            <Input v-model="addinfo.capnumber" style="width:500px" class="user_field" placeholder="转化/日"></Input>
+                     </FormItem>
+                      <FormItem label="是否开启" prop="">
+                            <i-switch v-model="addinfo.cpStatus" true-value="0" false-value="1" size="large">
+                                <span slot="open">ON</span>
+                                <span slot="close">OFF</span>
+                            </i-switch>
+                        </FormItem>
+                 </Form>
+             </Card>
+             <!-- 自定义页脚内容 -->  
+            <div slot="footer">
+                 <Button @click="canceOptimization()">{{$t('cancelBtn')}}</Button>
+                 <Button type="primary" @click="add()">{{$t('saveBtn')}}</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -73,6 +146,8 @@
     export default {
          data() {
              return {
+                   isAddChannel:false,
+                   isAddOptimization:false,
                    total:0,
                    addinfo:{
                       country:'',
@@ -133,7 +208,7 @@
                         fixed:'left'
                     },
                      {
-                        title:'二级渠道',
+                        title:'渠道',
                         key:"id1",
                         minWidth: 250,
                         align: 'center',
@@ -226,6 +301,7 @@
                               },
                               on: { //操作事件
                                  'on-change':(value)=>{
+                                     alert("11111")
                                      console.log(value);
                                      this.isonoff=value;
                                  }
@@ -236,42 +312,119 @@
                      {
                         title: '操作',
                         key: 'action',
-                        minWidth: 150,
+                        minWidth: 200,
                         align: 'center',
+                        fixed:'right',
                         render: (h, params) => {
                             return h('div', [
-                                h('Button', {
+                                h('Icon', {
                                     props: {
-                                        type: 'primary',
-                                        size: 'small'
+                                        custom:'_icon11',
+                                        size:'20'
                                     },
                                     style: {
-                                        marginRight: '5px'
+                                        marginRight: '10px',
+                                        cursor: 'pointer'
                                     },
                                     on: {
                                         click: () => {
-                                             this.showEdit(params.row.id)
+                                             this.editOne(params.row.offername)
                                         }
                                     }
-                                }, this.$t('editBtn')),
-                                 h('Button', {
+                                }, ''),
+                                h('Icon', {
                                     props: {
-                                        type: 'primary',
-                                        size: 'small'
+                                        custom:'_icon3',
+                                        size:'20'
                                     },
                                     style: {
-                                        marginRight: '5px'
+                                        marginRight: '10px',
+                                        cursor: 'pointer'
+                                    },
+                                    on: {
+                                        click: () => {
+                                             this.editTwo(params.row.offername)
+                                        }
+                                    }
+                                }, ''),
+                                h('Icon', {
+                                    props: {
+                                        custom:'_icon6',
+                                        size:'20'
+                                    },
+                                    style: {
+                                        marginRight: '10px',
+                                        cursor: 'pointer'
                                     },
                                     on: {
                                         click: () => {
                                              this.removeOffer(params.row.offername)
                                         }
                                     }
-                                }, this.$t('deleteBtn'))
+                                }, ''),
                             ],);
                         }
                     }
-                  ]
+                  ],
+                  ruleadd:{
+                    country:[
+                        { required: true,message:this.$t('addcountryWarning'),trigger: 'change' }
+                    ],
+                    operator:[
+                        {required:true,message:this.$t('addoperatorWarning'),trigger: 'change'}
+                    ],
+                    application:[
+                        {required:true,message:this.$t('addapplicationWarning'),trigger:'change'}
+                    ],
+                    platform:[
+                        {required:true,message:this.$t('addplatformWarning'),trigger:'change'}
+                    ],
+                    originallink:[
+                        {required:true,message:this.$t('addoriginallink'),trigger:'blur'}
+                    ]
+                },
+             }
+         },
+         methods: {
+             showAdd(){
+                this.isAddChannel=true;
+             },
+             cancelAdd(){
+                 this.isAddChannel=false;
+             },
+             add(){
+                 alert('保存成功')
+             },
+             removeOffer(){
+                  this.$Modal.confirm({
+                    title: this.$t('deleteConfirmationTitle'),
+                    content: '<p>'+this.$t('deleteConfirmContent')+'</p>',
+                    loading: true,
+                    okText: this.$t('confirmBtn'),
+                    cancelText: this.$t('cancelBtn'),
+                    onOk: () => {
+                        let url = '/market/portal/cp/remove';
+                        let ref = this;
+                        var params = {
+                           
+                        };
+                        this.$http.post(url, params).then(
+                           
+                        );
+                    }
+                });
+             },
+             //打开新增优化界面
+             editOne(){
+                 this.isAddOptimization=true;
+             },
+             //关闭新增优化
+             canceOptimization(){
+                 this.isAddOptimization=false;
+             },
+            
+             editTwo(){
+
              }
          },
     }
