@@ -201,7 +201,7 @@
         float: right;
         margin-top: 10px;
     }
-    .span_space{
+     .span_space{
 		width: 60px;
         display: -webkit-inline-box;
     }

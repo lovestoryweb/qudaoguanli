@@ -79,28 +79,32 @@
              width="800px"
              title="新增"
              v-model="isadd">
-            <Card :bordered="false">
-                    <!-- <Form ref="addoffer" :label-width="180">
-                        <FormItem :label="$t('渠道名称')" prop="">
-                            <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+            <Card :bordered="false" dis-hover>
+                    <Form ref="addoffer" :label-width="180">
+                        <FormItem :label="$t('国家名称')" prop="">
+                            <Input v-model="addinfo.country" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('回调地址')" prop="">
-                            <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                        <FormItem :label="$t('国家缩写')" prop="">
+                            <Input v-model="addinfo.suoxie" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('回调参数')" prop="">
-                            <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                        <FormItem :label="$t('英文名称')" prop="">
+                            <Input v-model="addinfo.english" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('报文录入')" prop="">
-                            <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                        <FormItem :label="$t('电话代码')" prop="">
+                            <Input v-model="addinfo.phone" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('回调成功关键字')" prop="">
-                            <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                        <FormItem :label="$t('所属时区')" prop="">
+                            <Input v-model="addinfo.house" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('备注')" prop="">
-                            <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                        <FormItem :label="$t('建议价格')" prop="">
+                            <Input v-model="addinfo.price" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                    </Form> -->
+                    </Form>
             </Card>
+            <div slot="footer">
+                <Button @click="canneladd()">{{$t('cancelBtn')}}</Button>
+                <Button type="primary" @click="save()">{{$t('saveBtn')}}</Button>
+            </div>
         </Modal>
     </div>
 </template>
@@ -189,10 +193,10 @@
             add(){
                 this.isadd=true;
             },
-            canceladd(){
+            canneladd(){
                 this.isadd=false;
             }
-        },
+        }
     }
 </script>
 

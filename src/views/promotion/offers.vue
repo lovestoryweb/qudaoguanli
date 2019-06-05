@@ -46,9 +46,9 @@
         </Row>
         <!-- 新增/编辑 -->
         <Modal
-                  v-model="isShowAddOrEdit"
-                  width="800px"
-                  :title="isShowAdd?$t('addBtn'):$t('editBtn')">
+            v-model="isShowAddOrEdit"
+            width="800px"
+            :title="isShowAdd?$t('addBtn'):$t('editBtn')">
                   <Card :bordered="false" dis-hover>
                       <Form ref="addoffer" :label-width="180" :model="addinfo" :rules="ruleadd">
                           <FormItem :label="$t('country')" prop="country">
@@ -90,7 +90,7 @@
                                <Input v-model="addinfo.capnumber" style="width:500px" class="user_field"></Input>
                           </FormItem>
                       </Form>
-                  </Card>
+                </Card>
                   <!-- 自定义页脚内容 -->  
                  <div v-if="isShowAdd" slot="footer">
                       <Button @click="cancelAdd()">{{$t('cancelBtn')}}</Button>
@@ -268,23 +268,27 @@
                 this.isShowAdd=true;
                 this.isShowAddOrEdit=true;
             },
+            //打开编辑
             showEdit(id){
                  console.log(id)
                  this.isShowAdd=false;
                  this.isShowAddOrEdit = true;
             },
+            // 确定编辑
             edit(){
                  console.log(this.addinfo)
                  console.log("编辑")
             },
+            // 取消编辑
             cancelEdit(){
                 this.isShowAddOrEdit=false;
             },
+            // 确定添加
             add(){
                 console.log(this.addinfo)
                 console.log("添加");
             },
-            //关闭编辑
+            //关闭添加
             cancelAdd(){
                 this.isShowAddOrEdit=false;
                 this.isShowAdd=false;
