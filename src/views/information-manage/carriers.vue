@@ -7,7 +7,7 @@
                         <div>
                             <Row>
                                 <Col span="5">
-                                    <span class="span_space">{{$t('平台')}}</span>
+                                    <span class="span_space">{{$t('platform')}}</span>
                                     <Select v-model="addinfo.pingtai" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
                                         <Option v-for="item in results" :value="item.pingtai" :key="item.pingtai">{{item.pingtai}}</Option>
                                     </Select>
@@ -43,14 +43,14 @@
         
          <Modal
              width="800px"
-             title="新增"
+             :title="$t('addBtn')"
              v-model="isadd">
             <Card :bordered="false" dis-hover>
                     <Form ref="addoffer" :label-width="180">
-                        <FormItem :label="$t('运营商')" prop="">
+                        <FormItem :label="$t('carriers')" prop="">
                             <Input v-model="addinfo.yunyingshang" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                         <FormItem :label="$t('备注')" prop="">
+                         <FormItem :label="$t('themeMemo')" prop="">
                             <Input v-model="addinfo.beizhu" type="textarea" style="width:500px" class="user_field"></Input>
                         </FormItem>
                     </Form>
@@ -92,31 +92,31 @@
                  ],
                  columns:[
                     {
-                         title:this.$t('运营商ID'),
+                         title:this.$t('carrierid'),
                          key:'id',
                          align:'center',
                          minWidth:50
                     },
                     {
-                         title:this.$t('运营商名称'),
+                         title:this.$t('carriername'),
                          key:'name',
                          align:'center',
                          minWidth:50
                     },
                     {
-                         title:this.$t('备注'),
+                         title:this.$t('themeMemo'),
                          key:'bz',
                          align:'center',
                          minWidth:50
                      },
                     {
-                         title:this.$t('创建时间'),
+                         title:this.$t('themeCreateTime'),
                          key:'createdate',
                          align:'center',
                          minWidth:50
                     },
                     {
-                         title:this.$t('操作'),
+                         title:this.$t('operateCol'),
                          align:'center',
                          minWidth:50,
                          render:(h,parmas)=>{

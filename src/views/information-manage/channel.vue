@@ -4,33 +4,41 @@
            <Col span="24">
                 <Card>
                     <div slot="title">
-                         <span class="span_space">{{$t('渠道名称')}}</span>
-                         <Select v-model="searchinfo.name" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                            <Option v-for="item in results" :value="item.name" :key="item.name">{{item.name}}</Option>
-                         </Select>
-                          <span class="span_space">{{$t('渠道ID')}}</span>
-                         <Select v-model="searchinfo.id" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                            <Option v-for="item in results" :value="item.id" :key="item.id">{{item.id}}</Option>
-                         </Select>
-                         <div style="float:right;">
-                            <Button type="primary" icon="ios-search" @click="search()">{{$t('search')}}</Button>
-                         </div>
+                         <Row>
+                             <Col span="5">
+                                <span class="span_space">{{$t('channelName')}}</span>
+                                <Input class="theme_searchfield" :placeholder="$t('channelNamePlaceholder')" v-model="searchinfo.channelName"/>
+                             </Col>
+                             <Col span="5">
+                                <span class="span_space">{{$t('channelid')}}</span>
+                                <Input :placeholder="$t('channelIdPlaceholder')" class="theme_searchfield" v-model="searchinfo.channelId"/>
+                             </Col>
+                             <Col span="14">
+                                  <div style="float:right;">
+                                     <Button type="primary" icon="ios-search" @click="search()">{{$t('search')}}</Button>
+                                  </div>
+                             </Col>
+                         </Row>
                     </div>
                     <div class="">
                          <div class="btndiv">
-                             <Button type="primary" @click="add()">
-                                 <Icon type="md-add"></Icon>新增
+                             <Button type="primary" @click="showadd()">
+                                 <Icon type="md-add"></Icon>&nbsp;{{$t('addBtn')}}
                              </Button>
                          </div>
-                         <Table border :columns="columns"></Table>
+                         <Table border :columns="columns" :data="datalist" :loading="loadingTable"></Table>
                          <Row>
                             <Page 
                             class-name="page" 
-                            :current="1" 
                             :total="total" 
-                            @on-change=""  
+                            :current="pageIndex" 
+                            :page-size="pageSize"
+                            :page-size-opts="[10,20,30,50]"
                             show-sizer
-                            show-elevator></Page>
+                            show-elevator
+                            @on-change="changePageIndex"
+                            @on-page-size-change="changePageSize"
+                            />
                          </Row>
                     </div>
                 </Card>
@@ -39,36 +47,45 @@
 
         <!-- 新增 -->
           <Modal
-                  v-model="isAdd"
+                  v-model="isShowAddOrEdit"
                   width="800px"
-                  title="新增渠道链接">
+                  :title="isAdd?$t('addBtn'):$t('editBtn')">
                   <Card :bordered="false" dis-hover>
                       <Form ref="addoffer" :label-width="180">
-                            <FormItem :label="$t('渠道名称')" prop="">
+                            <FormItem :label="$t('channel')" prop="" v-if="!isAdd">
+                                <Input v-model="addinfo.channelId" disabled style="width:500px" class="user_field"></Input>
+                            </FormItem>
+                            <FormItem :label="$t('channel')" prop="">
                                 <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
                             </FormItem>
-                            <FormItem :label="$t('回调地址')" prop="">
-                                <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                            <FormItem :label="$t('callBackCol')" prop="">
+                                <Input v-model="addinfo.notifyUrl" style="width:500px" class="user_field"></Input>
                             </FormItem>
-                            <FormItem :label="$t('回调参数')" prop="">
-                                <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                            <FormItem :label="$t('callBackParameter')" prop="">
+                                <Input v-model="addinfo.callback_params" style="width:500px" class="user_field"></Input>
                             </FormItem>
-                            <FormItem :label="$t('报文录入')" prop="">
-                                <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                            <FormItem :label="$t('message')" prop="">
+                                <Input v-model="addinfo.response" style="width:500px" class="user_field"></Input>
                             </FormItem>
-                            <FormItem :label="$t('回调成功关键字')" prop="">
-                                <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                            <FormItem :label="$t('keywordsforsuccess')" prop="">
+                                <Input v-model="addinfo.successRespKey" style="width:500px" class="user_field"></Input>
                             </FormItem>
-                            <FormItem :label="$t('备注')" prop="">
-                                <Input v-model="addinfo.channelName" style="width:500px" class="user_field"></Input>
+                            <FormItem :label="$t('themeMemo')" prop="">
+                                <Input v-model="addinfo.remarks" style="width:500px" class="user_field"></Input>
                             </FormItem>
                       </Form>
                   </Card>
                   <!-- 自定义页脚内容 -->  
-                  <div slot="footer">
-                      <Button @click="canneladd()">{{$t('cancelBtn')}}</Button>
-                      <Button type="primary" @click="save()">{{$t('saveBtn')}}</Button>
+                 <div v-if="isAdd" slot="footer">
+                      <Button @click="canceladd()">{{$t('cancelBtn')}}</Button>
+                      <Button type="primary" @click="add()">{{$t('saveBtn')}}</Button>
                  </div>
+                  <div v-else slot="footer">
+                      <Button @click="canceledit()">{{$t('cancelBtn')}}</Button>
+                      <Button type="primary" @click="edit()" :loading="isClickedEdit">{{$t('editBtn')}}</Button>
+                 </div>
+
+
         </Modal>
     </div>
 </template>
@@ -77,64 +94,78 @@
     export default {
             data() {
                 return {
+                     pageIndex:1,
+                     pageSize:10,
                      total:0,
-                     isAdd:false,
+                     isAdd:false,//是否打开新增窗口
+                     loadingTable:true, //表格是否在loading
+                     isClickedAdd:false,//是否正在发送新增请求
+                     isClickedEdit:false,//是否正在发送编辑请求
+                     isShowAddOrEdit:false,//新增编辑窗口
                      addinfo:{
+                         channelId:'',
                          channelName:'',
-
+                         level:'',
+                         notifyUrl:'',
+                         callback_params:'',
+                         response:'',
+                         successRespKey:'',
+                         remarks:''
                      },
                      searchinfo:{
-                         name:'',
-                         id:''
+                         channelName:'',
+                         channelId:''
                      },
-                     results:[
+                     datalist:[
                          {
-                             name:'1',
-                             id:'1'
-                         },
-                         {
-                             name:'2',
-                             id:'2'
+                         channelId:'1222222',
+                         channelName:'1',
+                         level:'1',
+                         notifyUrl:'1',
+                         callback_params:'1',
+                         response:'1',
+                         successRespKey:'1',
+                         remarks:'1'
                          }
                      ],
                      columns:[
                          {
-                             title:'渠道ID',
-                             key:'id',
+                             title:this.$t('channelId'),
+                             key:'channelId',
                              minWidth:50,
                              align:'center'
                          },
                          {
-                             title:'渠道名称',
-                             key:'name',
+                             title:this.$t('channelName'),
+                             key:'channelName',
                              minWidth:50,
                              align:'center'
                          },
                          {
-                             title:'回调地址',
-                             key:'address',
+                             title:this.$t('callBackCol'),
+                             key:'notifyUrl',
                              minWidth:150,
                              align:'center'
                          },
                          {
-                             title:'回调参数',
-                             key:'callback',
+                             title:this.$t('callBackParameter'),
+                             key:'callback_params',
                              minWidth:100,
                              align:'center'
                          },
                          {
-                             title:'报文',
-                             key:'message',
+                             title:this.$t('message'),
+                             key:'response',
                              minWidth:50,
                              align:'center'
                          },
                          {
-                             title:'回调成功关键字',
-                             key:'success',
+                             title:this.$t('keywordsforsuccess'),
+                             key:'successRespKey',
                              minWidth:50,
                              align:'center'
                          },{
-                             title:'操作',
+                             title:this.$t('operateCol'),
                              minWidth:100,
                              align:'center',
                              render:(h,params)=>{
@@ -150,7 +181,7 @@
                                         },
                                         on: {
                                             click: () => {
-                                                 this.showEdit(params.row.id)
+                                                 this.showedit(params.row.channelId)
                                             }
                                         }
                                     }, ''),
@@ -165,7 +196,7 @@
                                         },
                                         on: {
                                             click: () => {
-                                                 this.removeOffer(params.row.offername)
+                                                 this.remove(params.row.channelId)
                                             }
                                         }
                                     }, ''),
@@ -175,16 +206,145 @@
                      ],
                 }
             },
+            created(){
+                this.queryChannellist();
+            },
             methods: {
-                add(){
-                    this.isAdd=true;
+                //改变页数
+                changePageIndex(pageIndex){
+                    this.pageIndex=pageIndex;
+                    this.queryChannellist(); 
                 },
-                canneladd(){
+                //改变分页大小
+                changePageSize(pageSize){
+                    console.log(pageSize);
+                    this.pageSize=pageSize;
+                    this.pageIndex=1;
+                    this.queryChannellist();
+                },
+                
+                //关闭新增窗口
+                canceladd(){
                     this.isAdd=false;
+                    this.isShowAddOrEdit=false;
                 },
+                //打开编辑窗口
+                showedit(channelId){
+                    this.initchannel();
+                    this.isAdd=false;
+                    this.isShowAddOrEdit=true;
+                    let url='/channel/queryById';
+                    let ref=this;
+                    var params={
+                        channelId:channelId
+                    }
+                    this.$http.post(url,params).then(res=>{
+                        if(res&&res.resultCode=='0'){
+                             ref.addinfo=res.data;
+                        }
+                    })
+
+                },
+                //保存编辑
+                edit(){
+                     let url='/channel/mod';
+                     let ref=this;
+                     isClickedEdit:true;
+                     this.$http.post(url,this.addinfo).then(res=>{
+                         if(!!res&&res.resultCode=='0'){
+                              ref.$Message.success(ref.$t('savedSuccess'));
+                              ref.queryChannellist();
+                              ref.isAdd = false;
+                         }
+                         isClickedEdit:false;
+                     })
+                     
+                },
+                //取消编辑
+                canceledit(){
+                    this.isShowAddOrEdit=false;
+                },
+                //打开新增窗口
+                showadd(){
+                    this.initchannel();
+                    this.isAdd=true;
+                    this.isShowAddOrEdit=true;
+                },
+                //删除
+                remove(channelId){
+                    let url='/channel/del';
+                    let ref=this;
+                    var params={
+                        channelId:channelId
+                    }
+                    this.$http.post(url,params).then(res=>{
+                        if(!!res&&res.resultCode=='0'){
+                             ref.$Message.success(ref.$t('deletedSuccess'));
+                             ref.queryChannellist();
+                        }
+                    })
+                },
+                  //新增保存
+                add(){
+                     let url='/channel/add';
+                    let ref=this;
+                    this.isClickedAdd=true;
+                    var params={
+                         channelId:this.addinfo.channelId,
+                         channelName:this.addinfo.channelName,
+                         level:this.addinfo.level,
+                         notifyUrl:this.addinfo.notifyUrl,
+                         callback_params:this.addinfo.callback_params,
+                         response:this.addinfo.response,
+                         successRespKey:this.addinfo.successRespKey,
+                         remarks:this.addinfo.remarks
+                    }
+                    console.log(params)
+                    this.$http.post(url,params).then(res=>{
+                         if(!!res&&res.resultCode=='0'){
+                              ref.isAdd=false;
+                              ref.$Message.success(ref.$t('savedSuccess'));
+                              ref.queryChannellist();
+                         }
+                         ref.isClickedAdd=false;
+                    })
+                },
+                
+                //查询渠道信息
+                queryChannellist(){
+                    let url='/channel/query';
+                    let ref=this;
+                    var params={
+                        channelId:this.searchinfo.channelId,
+                        channelName:this.searchinfo.channelName,
+                        pageIndex:this.pageIndex,
+                        pageSize:this.pageSize,
+                        queryType:1
+                    }
+                    console.log(params);
+                    this.$http.post(url,params).then(res=>{
+                         if(res&&res.resultCode=='0'){
+                               this.datalist=res.data;
+                               this.total=res.total;
+                         }
+                         ref.loadingTable=false;
+                    })
+                },
+                //查询按钮
                 search(){
-                    
+                   this.queryChannellist();
                 },
+                //初始化输入框
+                initchannel(){
+                          this.addinfo.channelId='',
+                          this.addinfo.channelName='',
+                          this.addinfo.level='',
+                          this.addinfo.notifyUrl='',
+                          this.addinfo.callback_params='',
+                          this.addinfo.response='',
+                          this.addinfo.successRespKey='',
+                          this.addinfo.remarks=''
+                }
             },
     }
 </script>

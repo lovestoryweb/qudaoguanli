@@ -30,11 +30,11 @@
                               <Select v-model="addinfo.country" class="theme_searchfield":placeholder="$t('selectPlaceholder')">
                                  <Option v-for="item in results" :value="item.country" :key="item.country">{{item.country}}</Option>
                               </Select>
-                             <span class="span_space">链接开关</span>
+                             <span class="span_space">{{$t('linkswitch')}}</span>
                               <Select v-model="addinfo.appReportChannel" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
                                 <Option v-for="item in results" :value="item.appReportChannel" :key="item.appReportChannel">{{item.country}}</Option>
                              </Select>
-                               <span class="span_space">优化开关</span>
+                               <span class="span_space">{{$t('optimizationswitch')}}</span>
                               <Select v-model="addinfo.appReportChannel" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
                                 <Option v-for="item in results" :value="item.appReportChannel" :key="item.appReportChannel">{{item.country}}</Option>
                              </Select>
@@ -69,22 +69,22 @@
              v-model="isAddChannel"
              width="800px"
              title="新增渠道链接">
-             <Card :bordered="false" dis-hover>
+              <Card :bordered="false" dis-hover>
                  <Form ref="addoffer" :label-width="180" :model="addinfo" :rules="ruleadd">
-                     <FormItem label="Offer名称" prop="">
+                     <FormItem :label="$t('offername')" prop="">
                           <Select v-model="addinfo.country" style="width:500px" :placeholder="$t('selectPlaceholder')">
                                    <Option v-for="item in results" :value="item.country" :key="item.value">{{item.country}}</Option>
                            </Select>
                      </FormItem>
-                     <FormItem label="渠道" prop="">
+                     <FormItem :label="$t('channels')" prop="">
                           <Select v-model="addinfo.country" style="width:500px" :placeholder="$t('selectPlaceholder')">
                                    <Option v-for="item in results" :value="item.country" :key="item.value">{{item.country}}</Option>
                            </Select>
                      </FormItem>
-                      <FormItem label="价格" prop="">
+                      <FormItem :label="$t('unitprice')" prop="">
                             <Input v-model="addinfo.capnumber" style="width:500px" class="user_field"></Input>
                      </FormItem>
-                     <FormItem label="PO" prop="">
+                     <FormItem :label="PO" prop="">
                             <Input v-model="addinfo.capnumber" style="width:500px" class="user_field" placeholder="转化/日"></Input>
                      </FormItem>
                       <FormItem label="是否开启" prop="">
@@ -92,7 +92,7 @@
                                 <span slot="open">ON</span>
                                 <span slot="close">OFF</span>
                             </i-switch>
-                        </FormItem>
+                      </FormItem>
                  </Form>
              </Card>
              <!-- 自定义页脚内容 -->  
@@ -109,17 +109,17 @@
              title="新增优化">
              <Card :bordered="false" dis-hover>
                  <Form ref="addoffer" :label-width="180" :model="addinfo" :rules="ruleadd">
-                     <FormItem label="Offer名称" prop="">
+                     <FormItem label="$t('offername')" prop="">
                           <Select v-model="addinfo.country" style="width:500px" :placeholder="$t('selectPlaceholder')">
                                    <Option v-for="item in results" :value="item.country" :key="item.value">{{item.country}}</Option>
                            </Select>
                      </FormItem>
-                     <FormItem label="渠道" prop="">
+                     <FormItem label="$t('channels')" prop="">
                           <Select v-model="addinfo.country" style="width:500px" :placeholder="$t('selectPlaceholder')">
                                    <Option v-for="item in results" :value="item.country" :key="item.value">{{item.country}}</Option>
                            </Select>
                      </FormItem>
-                      <FormItem label="价格" prop="">
+                      <FormItem label="$t('unitprice')" prop="">
                             <Input v-model="addinfo.capnumber" style="width:500px" class="user_field"></Input>
                      </FormItem>
                      <FormItem label="PO" prop="">
@@ -130,7 +130,7 @@
                                 <span slot="open">ON</span>
                                 <span slot="close">OFF</span>
                             </i-switch>
-                        </FormItem>
+                      </FormItem>
                  </Form>
              </Card>
              <!-- 自定义页脚内容 -->  
@@ -201,21 +201,21 @@
                   ],
                   columns1:[
                     {
-                        title:'渠道ID',
+                        title:this.$t('channelid'),
                         key:"id",
                         minWidth: 250,
                         align: 'center',
                         fixed:'left'
                     },
                      {
-                        title:'渠道',
+                        title:this.$t('channels'),
                         key:"id1",
                         minWidth: 250,
                         align: 'center',
                        
                     },
                      {
-                        title:'Offer名称',
+                        title:this.$t('offername'),
                         key:"id2",
                         minWidth: 250,
                         align: 'center',
@@ -229,14 +229,14 @@
                         
                     },
                      {
-                        title:'推广链接',
+                        title:this.$t('originallink'),
                         key:"id4",
                         minWidth: 250,
                         align: 'center',
                         
                     },
                      {
-                        title:'价格',
+                        title:this.$t('unitprice'),
                         key:"id5",
                         minWidth: 100,
                         align: 'center',
@@ -250,7 +250,7 @@
                        
                     },
                       {
-                        title:this.$t('linkonoff'),
+                        title:this.$t('linkswitch'),
                         key:'old',
                         minWidth: 150,
                         align: 'center',
@@ -269,28 +269,28 @@
                       }
                     },
                     {
-                        title:'回调类型',
+                        title:this.$t('postback'),
                         key:"id7",
                         minWidth: 100,
                         align: 'center',
                         
                     },
                     {
-                        title:'执行比例',
+                        title:this.$t('ratio'),
                         key:"id8",
                         minWidth: 100,
                         align: 'center',
                         
                     },
                     {
-                        title:'转化率上限',
+                        title:this.$t('conversion'),
                         key:"id8",
                         minWidth: 100,
                         align: 'center',
                         
                     },
                      {
-                        title:'优化开关',
+                        title:this.$t('optimizationswitch'),
                         key:'old',
                         minWidth: 150,
                         align: 'center',
@@ -310,7 +310,7 @@
                       }
                     },
                      {
-                        title: '操作',
+                        title: this.$t('operateCol'),
                         key: 'action',
                         minWidth: 200,
                         align: 'center',

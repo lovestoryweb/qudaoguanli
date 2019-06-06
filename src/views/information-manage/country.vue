@@ -7,49 +7,22 @@
                          <div>
                              <Row>
                                 <Col span="5">
-                                    <span class="span_space">国家名称</span>
-                                    <Select v-model="addinfo.country" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                                        <Option v-for="item in results" :value="item.country" :key="item.country">{{item.country}}</Option>
-                                    </Select>
+                                    <span class="span_space">{{$t('country')}}</span>
+                                    <Input class="theme_searchfield" :placeholder="$t('pleaseente')" v-model="searchinfo.countryName"/>
                                 </Col>
                                 <Col span="5">
-                                    <span class="span_space">国家缩写</span>
-                                    <Select v-model="addinfo.suoxie" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                                        <Option v-for="item in results" :value="item.suoxie" :key="item.suoxie">{{item.suoxie}}</Option>
-                                    </Select>
+                                    <span class="span_space">{{$t('acronym')}}</span>
+                                    <Input class="theme_searchfield" :placeholder="$t('pleaseente')" v-model="searchinfo.countryAbbreviation"/>
                                 </Col>
                                 <Col span="5">
-                                    <span class="span_space">英文名称</span>
-                                    <Select v-model="addinfo.english" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                                        <Option v-for="item in results" :value="item.english" :key="item.english">{{item.english}}</Option>
-                                    </Select>
-                                </Col>
-                                <Col span="5">
-                                    <span class="span_space">电话代码</span>
-                                    <Select v-model="addinfo.phone" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                                        <Option v-for="item in results" :value="item.phone" :key="item.phone">{{item.phone}}</Option>
-                                    </Select>
-                                </Col>
-                                <Col span="4">
+                                     <span class="span_space">{{$t('timezone')}}</span>
+                                    <Input class="theme_searchfield" :placeholder="$t('pleaseente')" v-model="searchinfo.timeZone"/>
+                                 </Col>
+                                <Col span="9">
                                      <div style="float:right;">
                                         <Button type="primary" icon="ios-search" @click="search()">{{$t('search')}}</Button>
                                     </div>
                                 </Col>
-                             </Row>
-                             <br>
-                             <Row>
-                                 <Col span="5">
-                                     <span class="span_space">所属时区</span>
-                                    <Select v-model="addinfo.house" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                                        <Option v-for="item in results" :value="item.house" :key="item.house">{{item.house}}</Option>
-                                    </Select>
-                                 </Col>
-                                 <Col span="5">
-                                     <span class="span_space">建议价格</span>
-                                     <Select v-model="addinfo.price" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                                        <Option v-for="item in results" :value="item.price" :key="item.price">{{item.price}}</Option>
-                                    </Select>
-                                 </Col>
                              </Row>
                          </div>
                     </div>
@@ -59,7 +32,7 @@
                                 <Icon type="md-add"></Icon>&nbsp;{{$t('addBtn')}}  
                             </Button>
                         </div>
-                        <Table border :columns="columns"></Table>
+                        <Table border :columns="columns" :data="datalist"></Table>
                         <Row>
                             <Page 
                             class-name="page" 
@@ -81,22 +54,22 @@
              v-model="isadd">
             <Card :bordered="false" dis-hover>
                     <Form ref="addoffer" :label-width="180">
-                        <FormItem :label="$t('国家名称')" prop="">
+                        <FormItem :label="$t('country')" prop="">
                             <Input v-model="addinfo.country" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('国家缩写')" prop="">
+                        <FormItem :label="$t('acronym')" prop="">
                             <Input v-model="addinfo.suoxie" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('英文名称')" prop="">
+                        <FormItem :label="$t('englishname')" prop="">
                             <Input v-model="addinfo.english" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('电话代码')" prop="">
+                        <FormItem :label="$t('areacode')" prop="">
                             <Input v-model="addinfo.phone" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('所属时区')" prop="">
+                        <FormItem :label="$t('timezone')" prop="">
                             <Input v-model="addinfo.house" style="width:500px" class="user_field"></Input>
                         </FormItem>
-                        <FormItem :label="$t('建议价格')" prop="">
+                        <FormItem :label="$t('suggested')" prop="">
                             <Input v-model="addinfo.price" style="width:500px" class="user_field"></Input>
                         </FormItem>
                     </Form>
@@ -114,6 +87,16 @@
         data() {
             return {
                 isadd:false,
+                pageIndex:1,
+                pageSize:10,
+                loadingTable:true,
+                total:0,
+                searchinfo:{
+                    countryName:'',
+                    countryAbbreviation:'',
+                    timeZone:'',
+                },
+                datalist:[],
                 addinfo:{
                     country:'',
                     suoxie:'',
@@ -122,73 +105,78 @@
                     house:'',
                     price:''
                 },
-                results:[
-                    {
-                        country:'中国',
-                        suoxie:'CN',
-                        english:'china',
-                        phone:'54545',
-                        house:'东八区',
-                        price:'89'
-                    },
-                    {
-                        country:'美国',
-                        suoxie:'UN',
-                        english:'unnitry',
-                        phone:'85412545',
-                        house:'西五区',
-                        price:'43'
-                    }
-                ],
                 columns:[
                     {
-                        title:this.$t('国家名称'),
-                        key:'name',
+                        title:this.$t('country'),
+                        key:'countryName',
                         align:'center',
                         minWidth:50
                     },
                     {
-                        title:this.$t('国家缩写'),
-                        key:'suoxie',
+                        title:this.$t('acronym'),
+                        key:'countryAbbreviation',
                         align:'center',
                         minWidth:50
                     },
                     {
-                        title:this.$t('英文名称'),
-                        key:'english',
+                        title:this.$t('englishname'),
+                        key:'englishName',
                         align:'center',
                         minWidth:50
                     },
                     {
-                        title:this.$t('电话代码'),
-                        key:'phone',
+                        title:this.$t('areacode'),
+                        key:'telCode',
                         align:'center',
                         minWidth:50
                     },
                     {
-                        title:this.$t('所属时区'),
-                        key:'phone',
+                        title:this.$t('timezone'),
+                        key:'timeZone',
                         align:'center',
                         minWidth:50
                     },
                     {
-                        title:this.$t('建议价格'),
-                        key:'price',
+                        title:this.$t('suggested'),
+                        key:'suggestPrice',
                         align:'center',
                         minWidth:50
                     },
                     {
-                        title:this.$t('创建时间'),
-                        key:'date',
+                        title:this.$t('versionCraeatTime'),
+                        key:'createTime',
                         align:'center',
                         minWidth:50
                     }
                 ]
             }
         },
+        created(){
+            this.querycountry();
+        },
         methods: {
+            querycountry(){
+                let url='/country/query';
+                let ref=this;
+                var params={
+                    countryName:this.searchinfo.countryName,
+                    countryAbbreviation:this.searchinfo.countryAbbreviation,
+                    timeZone:this.searchinfo.timeZone,
+                    queryType:1,
+                    pageIndex:this.pageIndex,
+                    pageSize:this.pageSize
+                }
+                this.$http.post(url,params).then(res=>{
+                    if(res&&res.resultCode=='0'){
+                         ref.datalist=res.data;
+                         ref.total=total;
+                    }
+                    loadingTable=false;
+                })
+                
+            },
             search() {
-                console.log(111)
+                this.querycountry();
             },
             add(){
                 this.isadd=true;
