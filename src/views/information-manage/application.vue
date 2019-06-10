@@ -58,7 +58,6 @@
                 <Button type="primary" @click="add()" :loading="isClickedAdd">{{$t('saveBtn')}}</Button>
             </div>
             <div v-else slot="footer">
-                {{addinfo}}
                 <Button @click="canceledit()">{{$t('cancelBtn')}}</Button>
                 <Button type="primary" @click="edit()" :loading="isClickedEdit">{{$t('editBtn')}}</Button>
             </div>
@@ -220,15 +219,24 @@
                 })
             },
             remove(appId){
-                let url='/app/del';
-                let ref=this;
-                var params={
-                    appId:appId
-                }
-                this.$http.post(url,params).then(res=>{
-                    if(!!res&&res.resultCode=='0'){
-                        ref.$Message.success(ref.$t('deletedSuccess'));
-                        ref.queryapplication();
+                this.$Modal.confirm({
+                     title: this.$t('deleteConfirmationTitle'),
+                     content: '<p>'+this.$t('deleteConfirmContent')+'</p>',
+                     loading: true,
+                     okText: this.$t('confirmBtn'),
+                     cancelText: this.$t('cancelBtn'),
+                     onOk: () => {
+                        let url='/app/del';
+                        let ref=this;
+                        var params={
+                            appId:appId
+                        }
+                        this.$http.post(url,params).then(res=>{
+                            if(!!res&&res.resultCode=='0'){
+                                ref.$Message.success(ref.$t('deletedSuccess'));
+                                ref.queryapplication();
+                            }
+                        })
                     }
                 })
             },

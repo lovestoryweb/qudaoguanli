@@ -221,17 +221,26 @@
                 })
             },
             remove(serviceId){
-                    let url='/serviceManage/del';
-                    let ref=this;
-                    var params={
-                        serviceId:serviceId
-                    }
-                    this.$http.post(url,params).then(res=>{
-                        if(!!res&&res.resultCode=='0'){
-                             ref.$Message.success(ref.$t('deletedSuccess'));
-                             ref.querycarriers();
+                this.$Modal.confirm({
+                     title: this.$t('deleteConfirmationTitle'),
+                     content: '<p>'+this.$t('deleteConfirmContent')+'</p>',
+                     loading: true,
+                     okText: this.$t('confirmBtn'),
+                     cancelText: this.$t('cancelBtn'),
+                     onOk: () => {
+                        let url='/serviceManage/del';
+                        let ref=this;
+                        var params={
+                            serviceId:serviceId
                         }
-                    })
+                        this.$http.post(url,params).then(res=>{
+                            if(!!res&&res.resultCode=='0'){
+                                 ref.$Message.success(ref.$t('deletedSuccess'));
+                                 ref.querycarriers();
+                            }
+                        })
+                     }
+                })
             },
             querycarriers(){
                 let url='/serviceManage/query';

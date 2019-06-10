@@ -96,6 +96,7 @@
                      pageSize:10,
                      total:0,
                      isAdd:false,//是否打开新增窗口
+                     isremove:false,//是否删除
                      loadingTable:true, //表格是否在loading
                      isClickedAdd:false,//是否正在发送新增请求
                      isClickedEdit:false,//是否正在发送编辑请求
@@ -270,17 +271,28 @@
                 },
                 //删除
                 remove(channelId){
-                    let url='/channel/del';
-                    let ref=this;
-                    var params={
-                        channelId:channelId
-                    }
-                    this.$http.post(url,params).then(res=>{
-                        if(!!res&&res.resultCode=='0'){
-                             ref.$Message.success(ref.$t('deletedSuccess'));
-                             ref.queryChannellist();
-                        }
-                    })
+                         this.$Modal.confirm({
+                             title: this.$t('deleteConfirmationTitle'),
+                             content: '<p>'+this.$t('deleteConfirmContent')+'</p>',
+                             loading: true,
+                             okText: this.$t('confirmBtn'),
+                             cancelText: this.$t('cancelBtn'),
+                             onOk: () => {
+                                let url='/channel/del';
+                                let ref=this;
+                                var params={
+                                    channelId:channelId
+                                }
+                                this.$http.post(url,params).then(res=>{
+                                    ref.$Modal.remove();
+                                    if(!!res&&res.resultCode=='0'){
+                                        ref.$Message.success(ref.$t('deletedSuccess'));
+                                        ref.queryChannellist();
+                                    }
+                                })
+                             }
+                        });
+     
                 },
                   //新增保存
                 add(){

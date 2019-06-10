@@ -293,17 +293,29 @@
                 })
             },
             remove(countryId){
-                    let url='/country/del';
-                    let ref=this;
-                    var params={
-                        countryId:countryId
-                    }
-                    this.$http.post(url,params).then(res=>{
-                        if(!!res&&res.resultCode=='0'){
-                             ref.$Message.success(ref.$t('deletedSuccess'));
-                             ref.querycountry();
+                this.$Modal.confirm({
+                     title: this.$t('deleteConfirmationTitle'),
+                     content: '<p>'+this.$t('deleteConfirmContent')+'</p>',
+                     loading: true,
+                     okText: this.$t('confirmBtn'),
+                     cancelText: this.$t('cancelBtn'),
+                     onOk: () => {
+                        let url='/country/del';
+                        let ref=this;
+                        var params={
+                            countryId:countryId
                         }
-                    })
+                        this.$http.post(url,params).then(res=>{
+                            ref.$Modal.remove();
+                            if(!!res&&res.resultCode=='0'){
+                                 ref.$Message.success(ref.$t('deletedSuccess'));
+                                 ref.querycountry();
+                            }
+                        })
+                    }
+                })
+
+                    
             },
             changePageIndex(pageIndex){
                     this.pageIndex=pageIndex;
