@@ -7,10 +7,8 @@
                         <div>
                             <Row>
                                 <Col span="5">
-                                    <span class="span_space">{{$t('platform')}}</span>
-                                    <Select v-model="addinfo.pingtai" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                                        <Option v-for="item in results" :value="item.pingtai" :key="item.pingtai">{{item.pingtai}}</Option>
-                                    </Select>
+                                    <span class="span_space">{{$t('carriers')}}</span>
+                                     <Input class="theme_searchfield" :placeholder="$t('channelNamePlaceholder')" v-model="searchinfo.serviceName"/>
                                 </Col>
                                 <Col offset="14" span="5">
                                      <div style="float:right;">
@@ -26,7 +24,7 @@
                                 <Icon type="md-add"></Icon>&nbsp;{{$t('addBtn')}}  
                             </Button>
                         </div>
-                        <Table border :columns="columns" :data="data" :no-data-text="$t('noResult')"></Table>
+                        <Table border :columns="columns" :data="datalist" :no-data-text="$t('noResult')"></Table>
                         <Row>
                             <Page 
                             class-name="page" 
@@ -43,21 +41,25 @@
         
          <Modal
              width="800px"
-             :title="$t('addBtn')"
-             v-model="isadd">
+             v-model="isShowAddOrEdit"
+            :title="isAdd?$t('addBtn'):$t('editBtn')">
             <Card :bordered="false" dis-hover>
-                    <Form ref="addoffer" :label-width="180">
-                        <FormItem :label="$t('carriers')" prop="">
-                            <Input v-model="addinfo.yunyingshang" style="width:500px" class="user_field"></Input>
-                        </FormItem>
-                         <FormItem :label="$t('themeMemo')" prop="">
-                            <Input v-model="addinfo.beizhu" type="textarea" style="width:500px" class="user_field"></Input>
-                        </FormItem>
-                    </Form>
+                <Form ref="" :label-width="180">
+                    <FormItem :label="$t('carriers')" prop="">
+                        <Input v-model="addinfo.serviceName" style="width:500px" class="user_field"></Input>
+                    </FormItem>
+                     <FormItem :label="$t('themeMemo')" prop="">
+                        <Input v-model="addinfo.remarks" type="textarea" style="width:500px" class="user_field"></Input>
+                    </FormItem>
+                </Form>
             </Card>
-            <div slot="footer">
-                <Button @click="canneladd()">{{$t('cancelBtn')}}</Button>
-                <Button type="primary" @click="save()">{{$t('saveBtn')}}</Button>
+            <div v-if="isAdd" slot="footer">
+                <Button @click="canceladd()">{{$t('cancelBtn')}}</Button>
+                <Button type="primary" @click="add()" :loading="isClickedAdd">{{$t('saveBtn')}}</Button>
+            </div>
+            <div v-else slot="footer">
+                <Button @click="canceledit()">{{$t('cancelBtn')}}</Button>
+                <Button type="primary" @click="edit()" :loading="isClickedEdit">{{$t('editBtn')}}</Button>
             </div>
         </Modal>
     </div>
@@ -67,51 +69,54 @@
     export default {
          data() {
              return {
-                 isadd:false,
-                 data:[
-                     {
-                         id:'1',
-                         name:'中国移动',
-                         bz:'备注',
-                         createdate:'2018-2-1',
-
-                     }
-                 ],
-                 addinfo:{
-                     pingtai:'',
-                     yunyingshang:'',
-                     beizhu:''
-                 },
-                 results:[
+                isAdd:false,
+                isShowAddOrEdit:false,
+                searchinfo:{
+                     serviceName:''
+                },
+                datalist:[
                     {
-                         pingtai:'1'
-                    },
-                    {
-                         pingtai:'2'
+                        serviceId:'1',
+                        serviceCode:'1',
+                        serviceName:'2',
+                        remarks:'2',
+                        createTime:'2'
                     }
-                 ],
-                 columns:[
+                ],
+                addinfo:{
+                     serviceId:'',
+                     serviceCode:'',
+                     serviceName:'',
+                     remarks:''
+                },
+                pageIndex:1,
+                pageSize:10,
+                total:0,
+                loadingTable:true, //表格是否在loading
+                isClickedAdd:false,//是否正在发送新增请求
+                isClickedEdit:false,//是否正在发送编辑请求
+                columns:[
                     {
                          title:this.$t('carrierid'),
-                         key:'id',
+                         key:'serviceId',
                          align:'center',
                          minWidth:50
                     },
                     {
                          title:this.$t('carriername'),
-                         key:'name',
+                         key:'serviceName',
                          align:'center',
                          minWidth:50
                     },
                     {
                          title:this.$t('themeMemo'),
-                         key:'bz',
+                         key:'remarks',
                          align:'center',
                          minWidth:50
                      },
                     {
                          title:this.$t('themeCreateTime'),
-                         key:'createdate',
+                         key:'createTime',
                          align:'center',
                          minWidth:50
                     },
@@ -119,7 +124,7 @@
                          title:this.$t('operateCol'),
                          align:'center',
                          minWidth:50,
-                         render:(h,parmas)=>{
+                         render:(h,params)=>{
                                return h('div', [
                                  h('Icon', {
                                     props: {
@@ -132,7 +137,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                             this.showEdit(params.row.id)
+                                             this.showEdit(params.row.serviceId)
                                         }
                                     }
                                 }, ''),
@@ -147,7 +152,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                             this.removeOffer(params.row.id)
+                                             this.remove(params.row.serviceId)
                                         }
                                     }
                                 }, ''),
@@ -158,13 +163,102 @@
                  ],
              }
          },
+         created(){
+             this.querycarriers();
+         },
          methods: {
-             showAdd(){
-                 this.isadd=true;
-             },
-             canneladd(){
-                 this.isadd=false;
-             },
+            showAdd(){
+                this.initcarriesr();
+                this.isShowAddOrEdit=true;
+                this.isAdd=true;
+            },
+            canceladd(){
+                this.isAdd=false;
+                this.isShowAddOrEdit=false;
+            },
+            add(){
+                let url='/serviceManage/add';
+                let ref=this;
+                this.isClickedAdd=true;
+                this.$http.post(url,ref.addinfo).then(res=>{
+                    if(res&&res.resultCode=='0'){
+                        ref.isShowAddOrEdit=false;
+                        ref.$Message.success(ref.$t('savedSuccess'));
+                        ref.querycarriers();
+                    }
+                    ref.isClickedAdd=false;
+                })
+            },
+            showEdit(serviceId){
+                this.initcarriesr();
+                this.isAdd=false;
+                this.isShowAddOrEdit=true;
+                let url='/serviceManage/queryById';
+                let ref=this;
+                var params={
+                    serviceId:serviceId
+                }
+                this.$http.post(url,params).then(res=>{
+                    if(res&&res.resultCode=='0'){
+                        ref.addinfo=res.data;
+                    }
+                })
+            },
+            canceledit(){
+                this.isShowAddOrEdit=false;
+            },
+            edit(){
+                let url='/serviceManage/mod';
+                isClickedEdit:true;
+                let ref=this;
+               
+                this.$http.post(url,ref.addinfo).then(res=>{
+                    if(!!res&&res.resultCode=='0'){
+                        ref.$Message.success(ref.$t('savedSuccess'));
+                        ref.querycarriers();
+                        ref.isShowAddOrEdit = false;
+                    }
+                })
+            },
+            remove(serviceId){
+                    let url='/serviceManage/del';
+                    let ref=this;
+                    var params={
+                        serviceId:serviceId
+                    }
+                    this.$http.post(url,params).then(res=>{
+                        if(!!res&&res.resultCode=='0'){
+                             ref.$Message.success(ref.$t('deletedSuccess'));
+                             ref.querycarriers();
+                        }
+                    })
+            },
+            querycarriers(){
+                let url='/serviceManage/query';
+                let ref=this;
+                var params={
+                    serviceName:this.searchinfo.serviceName,
+                    queryType:1,
+                    pageIndex:this.pageIndex,
+                    pageSize:this.pageSize
+                }
+                this.$http.post(url,params).then(res=>{
+                    if(res&&res.resultCode=='0'){
+                        ref.datalist=res.data;
+                        ref.total=res.total;
+                    }
+                    ref.loadingTable=false;
+                })
+            },
+            search() {
+                this.querycarriers();
+            },
+            initcarriesr(){
+                this.addinfo.serviceId='',
+                this.addinfo.serviceCode='',
+                this.addinfo.serviceName='',
+                this.addinfo.remarks=''
+            }
          },
     }
 </script>

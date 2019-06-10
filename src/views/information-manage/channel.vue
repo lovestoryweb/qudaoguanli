@@ -78,14 +78,12 @@
                   <!-- 自定义页脚内容 -->  
                  <div v-if="isAdd" slot="footer">
                       <Button @click="canceladd()">{{$t('cancelBtn')}}</Button>
-                      <Button type="primary" @click="add()">{{$t('saveBtn')}}</Button>
+                      <Button type="primary" @click="add()" :loading="isClickedAdd">{{$t('saveBtn')}}</Button>
                  </div>
                   <div v-else slot="footer">
                       <Button @click="canceledit()">{{$t('cancelBtn')}}</Button>
                       <Button type="primary" @click="edit()" :loading="isClickedEdit">{{$t('editBtn')}}</Button>
                  </div>
-
-
         </Modal>
     </div>
 </template>
@@ -250,7 +248,7 @@
                      let url='/channel/mod';
                      let ref=this;
                      isClickedEdit:true;
-                     this.$http.post(url,this.addinfo).then(res=>{
+                     this.$http.post(url,ref.addinfo).then(res=>{
                          if(!!res&&res.resultCode=='0'){
                               ref.$Message.success(ref.$t('savedSuccess'));
                               ref.queryChannellist();
@@ -321,7 +319,6 @@
                         pageSize:this.pageSize,
                         queryType:1
                     }
-                    console.log(params);
                     this.$http.post(url,params).then(res=>{
                          if(res&&res.resultCode=='0'){
                                this.datalist=res.data;

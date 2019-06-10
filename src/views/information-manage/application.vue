@@ -8,9 +8,7 @@
                             <Row>
                                 <Col span="5">
                                     <span class="span_space">{{$t('appNameCol')}}</span>
-                                    <Select v-model="addinfo.pingtai" class="theme_searchfield" :placeholder="$t('selectPlaceholder')">
-                                        <Option v-for="item in results" :value="item.pingtai" :key="item.pingtai">{{item.pingtai}}</Option>
-                                    </Select>
+                                    <Input class="theme_searchfield" :placeholder="$t('channelNamePlaceholder')" v-model="searchinfo.appName"/>
                                 </Col>
                                 <Col offset="14" span="5">
                                      <div style="float:right;">
@@ -26,7 +24,7 @@
                                 <Icon type="md-add"></Icon>&nbsp;{{$t('addBtn')}}  
                             </Button>
                         </div>
-                        <Table border :columns="columns" :data="data" :no-data-text="$t('noResult')"></Table>
+                        <Table border :columns="columns" :data="datalist" :no-data-text="$t('noResult')"></Table>
                         <Row>
                             <Page 
                             class-name="page" 
@@ -43,21 +41,26 @@
         
          <Modal
              width="800px"
-             :title="$t('addBtn')"
-             v-model="isadd">
+             v-model="isShowAddOrEdit"
+            :title="isAdd?$t('addBtn'):$t('editBtn')">
             <Card :bordered="false" dis-hover>
-                    <Form ref="addoffer" :label-width="180">
-                        <FormItem :label="$t('carriers')" prop="">
-                            <Input v-model="addinfo.yunyingshang" style="width:500px" class="user_field"></Input>
+                    <Form ref="" :label-width="180">
+                        <FormItem :label="$t('application')" prop="">
+                            <Input v-model="addinfo.appName" style="width:500px" class="user_field"></Input>
                         </FormItem>
                          <FormItem :label="$t('themeMemo')" prop="">
-                            <Input v-model="addinfo.beizhu" type="textarea" style="width:500px" class="user_field"></Input>
+                            <Input v-model="addinfo.remarks" type="textarea" style="width:500px" class="user_field"></Input>
                         </FormItem>
                     </Form>
             </Card>
-            <div slot="footer">
-                <Button @click="canneladd()">{{$t('cancelBtn')}}</Button>
-                <Button type="primary" @click="save()">{{$t('saveBtn')}}</Button>
+            <div v-if="isAdd" slot="footer">
+                <Button @click="canceladd()">{{$t('cancelBtn')}}</Button>
+                <Button type="primary" @click="add()" :loading="isClickedAdd">{{$t('saveBtn')}}</Button>
+            </div>
+            <div v-else slot="footer">
+                {{addinfo}}
+                <Button @click="canceledit()">{{$t('cancelBtn')}}</Button>
+                <Button type="primary" @click="edit()" :loading="isClickedEdit">{{$t('editBtn')}}</Button>
             </div>
         </Modal>
     </div>
@@ -67,51 +70,54 @@
     export default {
          data() {
              return {
-                 isadd:false,
-                 data:[
+                isAdd:false,
+                isShowAddOrEdit:false,
+                total:0,
+                pageIndex:1,
+                pageSize:1,
+                loadingTable:true, //表格是否在loading
+                isClickedAdd:false,//是否正在发送新增请求
+                isClickedEdit:false,//是否正在发送编辑请求
+                datalist:[
                      {
-                         id:'1',
-                         name:'中国移动',
-                         bz:'备注',
-                         createdate:'2018-2-1',
-
+                         appId:'1',
+                         appName:'1',
+                         appInfo:'fdfd',
+                         remarks:'12fd',
+                         createTime:'2'
                      }
                  ],
-                 addinfo:{
-                     pingtai:'',
-                     yunyingshang:'',
-                     beizhu:''
-                 },
-                 results:[
-                    {
-                         pingtai:'1'
-                    },
-                    {
-                         pingtai:'2'
-                    }
-                 ],
+                searchinfo:{
+                    appName:''
+                },
+                addinfo:{
+                    appId:'',
+                    appName:'',
+                    appInfo:'',
+                    remarks:''
+                },
                  columns:[
                     {
                          title:this.$t('appNameCol'),
-                         key:'id',
+                         key:'appName',
                          align:'center',
                          minWidth:50
                     },
                     {
                          title:this.$t('catalogDescCol'),
-                         key:'name',
+                         key:'appInfo',
                          align:'center',
                          minWidth:50
                     },
                     {
                          title:this.$t('themeMemo'),
-                         key:'bz',
+                         key:'remarks',
                          align:'center',
                          minWidth:50
                      },
                     {
                          title:this.$t('versionCraeatTime'),
-                         key:'createdate',
+                         key:'createTime',
                          align:'center',
                          minWidth:50
                     },
@@ -119,7 +125,7 @@
                          title:this.$t('operateCol'),
                          align:'center',
                          minWidth:50,
-                         render:(h,parmas)=>{
+                         render:(h,params)=>{
                                return h('div', [
                                  h('Icon', {
                                     props: {
@@ -132,7 +138,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                             this.showEdit(params.row.id)
+                                             this.showEdit(params.row.appId)
                                         }
                                     }
                                 }, ''),
@@ -147,7 +153,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                             this.removeOffer(params.row.id)
+                                             this.remove(params.row.appId)
                                         }
                                     }
                                 }, ''),
@@ -158,13 +164,97 @@
                  ],
              }
          },
+         created(){
+             this.queryapplication();
+         },
          methods: {
-             showAdd(){
-                 this.isadd=true;
-             },
-             canneladd(){
-                 this.isadd=false;
-             },
+            showAdd(){
+                this.initapp();
+                this.isShowAddOrEdit=true;
+                this.isAdd=true;
+            },
+            canceladd(){
+                this.isAdd=false;
+                this.isShowAddOrEdit=false;
+            },
+            add(){
+                let url='/app/add';
+                let ref=this;
+                this.$http.post(url,ref.addinfo).then(res=>{
+                    if(res&&res.resultCode=='0'){
+                        ref.isShowAddOrEdit=false;
+                        ref.isAdd=false;
+                        ref.$Message.success(ref.$t('savedSuccess'));
+                        ref.querycarriers();
+                    }
+                    ref.isClickedAdd=false;
+                })
+            },
+            showEdit(appId){
+                this.isAdd=false;
+                this.isShowAddOrEdit=true;
+                this.initapp();
+                let url='/app/queryById';
+                let ref=this;
+                var params={
+                    appId:appId
+                }
+                this.$http.post(url,params).then(res=>{
+                    if(res&&res.resultCode=='0'){
+                        this.addinfo=res.data;
+                    }
+                })
+            },
+            canceledit(){
+                this.isShowAddOrEdit=false;
+            },
+            edit(){
+                let url='/app/mod';
+                let ref=this;
+                this.$http.post(url,ref.addinfo).then(res=>{
+                    if(res&&res.resultCode=='0'){
+                        ref.$Message.success(ref.$t('savedSuccess'));
+                        ref.queryapplication();
+                        ref.isShowAddOrEdit = false;
+                    }
+                })
+            },
+            remove(appId){
+                let url='/app/del';
+                let ref=this;
+                var params={
+                    appId:appId
+                }
+                this.$http.post(url,params).then(res=>{
+                    if(!!res&&res.resultCode=='0'){
+                        ref.$Message.success(ref.$t('deletedSuccess'));
+                        ref.queryapplication();
+                    }
+                })
+            },
+            queryapplication(){
+                let url='/app/query';
+                let ref=this;
+                var params={
+                    appName:this.searchinfo.appName,
+                    queryType:1,
+                    pageIndex:this.pageIndex,
+                    pageSize:this.pageSize
+                }
+                this.$http.post(url,params).then(res=>{
+                    if(res&&res.resultCode=='0'){
+                         ref.datalist=res.data;
+                         ref.total=res.total;
+                    }
+                    ref.loadingTable=false;
+                })
+            },
+            search(){
+                this.queryapplication();
+            },
+            initapp(){
+                this.addinfo.appName='';
+            }
          },
     }
 </script>

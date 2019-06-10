@@ -109,7 +109,8 @@ export const appRouter = [
                 {path:'channelbudget',title:{i18n:'channelbudget'},icon:'',name:'channelbudget',component:()=>import('@/views/budget-manage/channel-budget.vue')},
                 {path:'regionalstatistics',title:{i18n:'regionalstatistics'},icon:'',name:'regionalstatistics',component:()=>import('@/views/budget-manage/regional-statistics.vue')},
                 {path:'revenuestatistics',title:{i18n:'revenuestatistics'},icon:'',name:'revenuestatistics',component:()=>import('@/views/budget-manage/revenue-statistics.vue')},
-                {path:'billmanage',title:{i18n:'billmanage'},icon:'',name:'billmanage',component:()=>import('@/views/budget-manage/bill-manage.vue')}
+                {path:'billmanage',title:{i18n:'billmanage'},icon:'',name:'billmanage',component:()=>import('@/views/budget-manage/bill-manage.vue')},
+                {path:'ceshi',title:'ceshi',name:'ceshi',component:()=>import('@/views/budget-manage/cs.vue')}
             ]
        }
 ];
