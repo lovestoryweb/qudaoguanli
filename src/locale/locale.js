@@ -541,7 +541,6 @@ export default {
         suggested:'建议价格',
         carrierid:'运营商ID',
         carriername:'运营商名称',
-
         clickId: '点击ID',
         nameOfPreferential: 'Offer名称',
         channelId: '渠道ID',
@@ -550,7 +549,15 @@ export default {
         noticeTheResults: '通知结果',
         clickOnTheTime: '点击时间',
         noticeTheTime: '通知时间',
-        pleaseente:'请输入'
+        pleaseente:'请输入',
+        violationtype:'违规类型',
+        violationlevel:'违规等级',
+        firstlinereport:'一线报告',
+        channelsreport:'渠道回溯报告',
+        quantengReport:'泉腾回溯报告',
+        violationtime:'违规通报时间',
+        result:'最终通知结果',
+        isaddviolation:'新增渠道违规记录'
     },
     'en-US': {
         loginTitle: 'Login',
@@ -1095,7 +1102,15 @@ export default {
         suggested:'Suggested Unit Price',
         carrierid:'Carrier ID',
         carriername:'Carrier Name',
-        pleaseente:'please ente'
+        pleaseente:'please ente',
+        violationtype:'Violation Type',
+        violationlevel:'Violation Level',
+        firstlinereport:'First-line Report',
+        channelsreport:'Channels Report', 
+        quantengReport:'Quanteng Report',
+        violationtime:'Violation Time',
+        result:'Result',
+        isaddviolation:'Add violation'
     },
     'th-TH': {
     }

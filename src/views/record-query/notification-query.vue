@@ -39,7 +39,7 @@
                                 </Col>
                                 <Col span="9">
                                     <div style="float:right">
-                                        <Button @click="queryclicklist()" type="primary" icon="ios-search">查询</Button>
+                                        <Button @click="search()" type="primary" icon="ios-search">查询</Button>
                                     </div>
                                 </Col>
                             </Row>
@@ -78,7 +78,7 @@
                     {
                         channelId: "1",
                         channelName: "323",
-                        level: "2",
+                        level: "1",
                         notifyUrl: "3232",
                         callback_params: "3232",
                         response: "3232",
@@ -157,13 +157,6 @@
                 this.pageIndex = 1;
                 this.queryclicklist();
             },
-            // 默认查询
-            changedate(data1, data2) {
-                return {
-                    data1,
-                    data2
-                };
-            },
             //开始时间
             changedatestart(data) {
                 this.startTime = data;
@@ -172,21 +165,6 @@
             changedateend(data) {
                 this.endTime = data;
             },
-
-            // timestampToTime(data) {
-            //     var date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-            //     Y = date.getFullYear() + "-";
-            //     M =
-            //         (date.getMonth() + 1 < 10
-            //             ? "0" + (date.getMonth() + 1)
-            //             : date.getMonth() + 1) + "-";
-            //     D = date.getDate() + " ";
-            //     h = date.getHours() + ":";
-            //     m = date.getMinutes() + ":";
-            //     s = date.getSeconds();
-            //     return Y + M + D + h + m + s;
-            // },
-
             queryclicklist() {
                 // console.log(111);
                 let url = "/click/query";
@@ -221,7 +199,7 @@
                     if (res && res.resultCode == "0") {
                         ref.channeldatalist = res.data;
                         ref.channeldatalist = ref.channeldatalist.filter(item => {
-                            return item.level == 2;
+                            return item.level == '2';
                         });
                     }
                 });
@@ -237,6 +215,9 @@
                         ref.applicationdatalist = res.data;
                     }
                 });
+            },
+            search(){
+                this.queryclicklist();
             }
         },
         computed: {},

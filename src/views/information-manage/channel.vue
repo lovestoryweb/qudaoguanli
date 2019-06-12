@@ -5,15 +5,15 @@
                 <Card>
                     <div slot="title">
                          <Row>
-                             <Col span="5">
+                             <Col :xs="24" :xl="5">
                                 <span class="span_space">{{$t('channelName')}}</span>
                                 <Input class="theme_searchfield" :placeholder="$t('channelNamePlaceholder')" v-model="searchinfo.channelName"/>
                              </Col>
-                             <Col span="5">
+                             <Col :xs="24" :xl="5">
                                 <span class="span_space">{{$t('channelid')}}</span>
                                 <Input :placeholder="$t('channelIdPlaceholder')" class="theme_searchfield" v-model="searchinfo.channelId"/>
                              </Col>
-                             <Col span="14">
+                             <Col :xs="24" :xl="14">
                                   <div style="float:right;">
                                      <Button type="primary" icon="ios-search" @click="search()">{{$t('search')}}</Button>
                                   </div>

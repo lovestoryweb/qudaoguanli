@@ -9,11 +9,11 @@
                         <Row :gutter="16">
                             <Col :xs="12" :lg="5">
                                 <span class="span_space">{{$t('startTime')}}</span>
-                                <DatePicker type="datetime" placeholder="Select date" style="width: 200px" @on-change="changedatestart"></DatePicker>
+                                <DatePicker type="datetime"  :placeholder="$t('startTime')" style="width: 200px" @on-change="changedatestart"></DatePicker>
                             </Col>
                             <Col :xs="12" :lg="5">
                                 <span class="span_space">{{$t('endTime')}}</span>
-                                <DatePicker type="datetime" placeholder="Select date" style="width: 200px" @on-change="changedateend"></DatePicker>
+                                <DatePicker type="datetime" :placeholder="$t('endTime')" style="width: 200px" @on-change="changedateend"></DatePicker>
                             </Col>
                         </Row>
                         <!-- 日历选择 E -->
@@ -21,13 +21,13 @@
                         <div>
                             <Row :gutter="16">
                                 <Col :xs="12" :lg="5">
-                                    <span>{{$t('TheChildChannel')}}</span>
+                                    <span class="span_space">{{$t('二级渠道')}}</span>
                                     <Select v-model="subChannel" style="width:200px">
                                         <Option v-for="item in channeldatalist" :value="item.channelId" :key="item.channelId">{{ item.channelId }}</Option>
                                     </Select>
                                 </Col>
                                 <Col :xs="12" :lg="5">
-                                    <span>{{$t('nameOfPreferential')}}</span>
+                                    <span class="span_space">{{$t('nameOfPreferential')}}</span>
                                     <Select v-model="nameOfPreferential" style="width:200px">
                                         <Option v-for="item in channeldatalist" :value="item.nameOfPreferential" :key="item.nameOfPreferential">{{ item.nameOfPreferential}}</Option>
                                     </Select>
@@ -60,7 +60,6 @@
         data() {
             return {
                 // 应用名称
-
                 startTime: "",
                 endTime: "",
                 subChannel: "",
@@ -70,25 +69,13 @@
                 searchchannel: "",
                 searchapplication: "",
                 nameOfPreferential: "",
-
                 applicationdatalist: [],
                 // loading判断
                 isloading: true,
                 // Table表格数据
                 resultslist: [],
                 //下拉框数据
-                channeldatalist: [
-                    {
-                        clickId: 2322,
-                        nameOfPreferential: "appname",
-                        channelId: "ewdafs",
-                        channel: "1223e",
-                        subchannelParameter: "1232",
-                        channelLinks: "1rwa",
-                        channelClickID: "1eqqeq",
-                        clickOnTheTime: "3212"
-                    }
-                ],
+                channeldatalist: [],
                 columns1: [
                     {
                         title: this.$t("clickId"),
@@ -186,6 +173,24 @@
                     ref.isloading = false;
                 });
             },
+
+            //渠道下拉
+             querychannel() {
+                let url = "/channel/query";
+                let ref = this;
+                var params = {
+                    //查询类型
+                    queryType: 0
+                };
+                this.$http.post(url, params).then(res => {
+                    if (res && res.resultCode == "0") {
+                        ref.channeldatalist = res.data;
+                        ref.channeldatalist = ref.channeldatalist.filter(item => {
+                            return item.level == '2';
+                        });
+                    }
+                });
+            },
             queryaplication() {
                 let url = "/app/query";
                 let ref = this;
@@ -202,6 +207,7 @@
         created() {
             this.queryclicklist();
             this.queryaplication();
+            this.querychannel();
         }
     };
 </script>

@@ -8,7 +8,7 @@
                             <Row>
                                 <Col span="5">
                                     <span class="span_space">{{$t('carriers')}}</span>
-                                     <Input class="theme_searchfield" :placeholder="$t('channelNamePlaceholder')" v-model="searchinfo.serviceName"/>
+                                     <Input class="theme_searchfield" :placeholder="$t('pleaseente')" v-model="searchinfo.serviceName"/>
                                 </Col>
                                 <Col offset="14" span="5">
                                      <div style="float:right;">

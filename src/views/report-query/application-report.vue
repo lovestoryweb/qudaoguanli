@@ -656,7 +656,7 @@ export default {
         };
     },
     created() {
-		    this.loadingCatalog();
+		this.loadingCatalog();
         this.loadingApp();
         this.sortType='0';
         this.columns=this.columns1;
