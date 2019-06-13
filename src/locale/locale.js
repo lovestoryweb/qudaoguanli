@@ -557,7 +557,10 @@ export default {
         quantengReport:'泉腾回溯报告',
         violationtime:'违规通报时间',
         result:'最终通知结果',
-        isaddviolation:'新增渠道违规记录'
+        isaddviolation:'新增渠道违规记录',
+        restrictivecapratio:'限制比例',
+        opencapratio:'开放Cap比例',
+        linkstatus:'链接状态'
     },
     'en-US': {
         loginTitle: 'Login',
@@ -1110,7 +1113,10 @@ export default {
         quantengReport:'Quanteng Report',
         violationtime:'Violation Time',
         result:'Result',
-        isaddviolation:'Add violation'
+        isaddviolation:'Add violation',
+        restrictivecapratio:'Restrictive Cap Ratio',
+        opencapratio:'Open Cap Ratio',
+        linkstatus:'Link Status'
     },
     'th-TH': {
     }

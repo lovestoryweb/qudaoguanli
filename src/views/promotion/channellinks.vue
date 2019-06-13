@@ -200,13 +200,6 @@
                       }
                   ],
                   columns1:[
-                    {
-                        title:this.$t('channelid'),
-                        key:"id",
-                        minWidth: 250,
-                        align: 'center',
-                        fixed:'left'
-                    },
                      {
                         title:this.$t('channels'),
                         key:"id1",
@@ -215,41 +208,77 @@
                        
                     },
                      {
+                        title:this.$t('channelid'),
+                        key:"id",
+                        minWidth: 250,
+                        align: 'center',
+                    },
+                     {
                         title:this.$t('offername'),
                         key:"id2",
                         minWidth: 250,
                         align: 'center',
                         
                     },
-                     {
-                        title:'UID',
-                        key:"id3",
-                        minWidth: 250,
-                        align: 'center',
-                        
+                    {
+                        title:this.$t('复制链接'),
+                        minWidth:100,
+                        align:'center'
                     },
-                     {
-                        title:this.$t('originallink'),
-                        key:"id4",
-                        minWidth: 250,
-                        align: 'center',
-                        
-                    },
-                     {
+                    {
                         title:this.$t('unitprice'),
                         key:"id5",
                         minWidth: 100,
                         align: 'center',
                         
                     },
-                     {
+                    {
                         title:'PO',
                         key:"id6",
                         minWidth: 100,
                         align: 'center',
                        
                     },
-                      {
+                    {
+                        title:this.$t('postback'),
+                        key:"id7",
+                        minWidth: 100,
+                        align: 'center',
+                        
+                    },
+                    {
+                        title:this.$t('restrictivecapratio'),
+                        key:'',
+                        minWidth:100,
+                        align:'center'
+                    },
+                    {
+                        title:this.$t('opencapratio'),
+                        key:'',
+                        minWidth:100,
+                        align:'center'
+                    },
+                     {
+                        title:this.$t('conversion'),
+                        key:"id8",
+                        minWidth: 100,
+                        align: 'center',
+                        
+                    },
+                    {
+                        title:this.$t('linkstatus'),
+                        key:'',
+                        minWidth:100,
+                        align:'center'
+                    },
+                    {
+                        title:this.$t('originallink'),
+                        key:"id4",
+                        minWidth: 250,
+                        align: 'center',
+                        
+                    },
+                    {
                         title:this.$t('linkswitch'),
                         key:'old',
                         minWidth: 150,
@@ -268,13 +297,7 @@
                         })
                       }
                     },
-                    {
-                        title:this.$t('postback'),
-                        key:"id7",
-                        minWidth: 100,
-                        align: 'center',
-                        
-                    },
+                    
                     {
                         title:this.$t('ratio'),
                         key:"id8",
