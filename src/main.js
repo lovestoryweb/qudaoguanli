@@ -9,7 +9,14 @@ import 'iview/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
 import util from './libs/util';
 import http from './libs/axiosUtil.js';
-import './styles/icon/style.less'
+import './styles/style.less';
+import VueClipboard from 'vue-clipboard2';
+
+
+
+Vue.use(VueClipboard);
+
+
 
 Vue.use(VueI18n);
 Vue.use(iView);

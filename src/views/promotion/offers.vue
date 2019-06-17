@@ -94,11 +94,10 @@
                                <Input v-model="addinfo.capnumber" style="width:500px" class="user_field" :placeholder="$t('pleaseente')"></Input>
                           </FormItem>
                           <FormItem :label="$t('userEnableCol')">
-                                {{aaaaaa}}
-                                <RadioGroup @on-change="onchange">
-                                    <Radio v-for="item in userEnableCol" :label="item.id" :key="item.id">{{item.value}}</Radio>
+                                <RadioGroup v-model="addinfo.userEnableCol">
+                                    <Radio v-for="item in userEnableCollist" :label="item.value" :key="item.value"><span>{{item.label}}</span></Radio>
                                 </RadioGroup>
-                          </FormItem>
+                          </FormItem> 
                       </Form>
                 </Card>
                   <!-- 自定义页脚内容 -->  
@@ -122,7 +121,7 @@
         },
         data() {
             return {
-                aaaaaa:'',
+                aaa:'',
                 total:0,
                 pageIndex:1,
                 pageSize:10,
@@ -137,7 +136,8 @@
                     promotiontype:'',
                     originallink:'',
                     captype:'',
-                    capnumber:''
+                    capnumber:'',
+                    userEnableCol:''
                 },
                 //查询信息
                 searchinfo:{
@@ -149,7 +149,15 @@
                 countrylist:[],//国家查询列表
                 carrierslist:[],//运营商查询列表
                 applicationlist:[],//应用查询列表
-                
+                userEnableCollist: [
+                     {
+                       label: '是',
+                       value: '1'
+                     }, {
+                       label: '否',
+                       value: '0'
+                     }
+                ],
                 platformlist:[//平台
                     {
                         id:1,
@@ -237,7 +245,7 @@
                      {
                         title:this.$t('promotiontype'),
                         key:"flow",
-                        minWidth: 150,
+                        minWidth: 100,
                         align: 'center',
                         render:(h,params)=>{
                             if(params.row.flow==0){
@@ -312,7 +320,8 @@
                                     },
                                     style: {
                                         marginRight: '10px',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        color:'#239FED'
                                     },
                                     on: {
                                         click: () => {
@@ -327,7 +336,8 @@
                                     },
                                     style: {
                                         marginRight: '10px',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        color:'#ff4401'
                                     },
                                     on: {
                                         click: () => {

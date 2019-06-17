@@ -560,7 +560,18 @@ export default {
         isaddviolation:'新增渠道违规记录',
         restrictivecapratio:'限制比例',
         opencapratio:'开放Cap比例',
-        linkstatus:'链接状态'
+        linkstatus:'是否开启链接',
+        optimizationstatus:'优化状态',
+        offerlink:'Offer链接',
+        promotionlink:'推广链接',
+        po:'PO',
+        type:'类型',
+        islinkop:'是否开启优化',
+        addchannellink:'新增渠道链接',
+        editchannellink:'编辑渠道链接',
+        copylink:'复制链接',
+        cap:'Cap',
+        copysuccess:'复制成功'
     },
     'en-US': {
         loginTitle: 'Login',
@@ -1116,7 +1127,17 @@ export default {
         isaddviolation:'Add violation',
         restrictivecapratio:'Restrictive Cap Ratio',
         opencapratio:'Open Cap Ratio',
-        linkstatus:'Link Status'
+        linkstatus:'Link Status',
+        optimizationstatus:'Optimization Status',
+        offerlink:'Offer Link',
+        promotionlink:'Promotion Link',
+        po:'PO',
+        type:'Type',
+        islinkop:'Link Status',
+        addchannellink:'Add Channel Link',
+        editchannellink:'Edit Channel Link',
+        copylink:'Copy Link',
+        copysuccess:'Copy success'
     },
     'th-TH': {
     }

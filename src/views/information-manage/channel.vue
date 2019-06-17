@@ -176,7 +176,8 @@
                                         },
                                         style: {
                                             marginRight: '10px',
-                                            cursor: 'pointer'
+                                            cursor: 'pointer',
+                                            color:'#239FED'
                                         },
                                         on: {
                                             click: () => {
@@ -191,7 +192,8 @@
                                         },
                                         style: {
                                             marginRight: '10px',
-                                            cursor: 'pointer'
+                                            cursor: 'pointer',
+                                            color:'#ff4401'
                                         },
                                         on: {
                                             click: () => {
@@ -253,7 +255,7 @@
                          if(!!res&&res.resultCode=='0'){
                               ref.$Message.success(ref.$t('savedSuccess'));
                               ref.queryChannellist();
-                              ref.isAdd = false;
+                              ref.isShowAddOrEdit = false;
                          }
                          isClickedEdit:false;
                      })
